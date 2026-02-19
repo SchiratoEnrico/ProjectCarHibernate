@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -19,12 +21,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity (name = "moto")
-public class Moto {
-	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+@Entity
+@Table(name = "moto")
+@PrimaryKeyJoinColumn(name = "id")
+
+public class Moto extends Veicolo{
+
 	@Column(
 			name = "cc",
 			nullable = false
@@ -38,8 +40,7 @@ public class Moto {
 	private Integer numeroMarce;
 	
 	
-	@Column(name = "targa", nullable = false)
-	@NotBlank(message = "La targa non può essere vuota")
+	@Column(name = "targa", nullable = false, unique = true)
 	@Pattern(
 	    regexp = "^[XY][BCDFGHJKLMNPRSTVWXYZ2-9]{5}$",
 	    message = "Formato targa non valido (es: AB123CD)"
