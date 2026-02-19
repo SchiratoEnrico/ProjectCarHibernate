@@ -7,10 +7,8 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MacchinaRequest extends VeicoloRequest{
-	
-	private Integer numero_porte;
-	private Integer cc;
-	private String targa;
+public class TipoSospensioneRequest {
 
+	private Integer id_tipo_sospensione;
+	 private String tipo_sospensione;
 }
