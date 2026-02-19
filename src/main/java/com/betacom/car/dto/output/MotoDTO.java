@@ -15,6 +15,6 @@ import lombok.ToString;
 @ToString
 public class MotoDTO extends VeicoloDTO {
 	private Integer cc;
-	private int numeroMarce;
+	private Integer numeroMarce;
 	private String targa;
 }
