@@ -1,29 +1,26 @@
 package com.betacom.car.models;
 
-import org.hibernate.annotations.NotFound;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity (name = "macchine")
-public class Macchina {
-	
+@Entity (name = "moto")
+public class Moto {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -35,16 +32,16 @@ public class Macchina {
 	private Integer cc;
 	
 	@Column(
-			name = "numero_porte",
+			name = "numero_marce",
 			nullable = false
 			)
-	private Integer numeroPorte;
+	private Integer numeroMarce;
 	
 	
 	@Column(name = "targa", nullable = false)
 	@NotBlank(message = "La targa non può essere vuota")
 	@Pattern(
-	    regexp = "^[A-HJ-NPR-TV-Z]{2}[0-9]{3}[A-HJ-NPR-TV-Z]{2}$",
+	    regexp = "^[XY][BCDFGHJKLMNPRSTVWXYZ2-9]{5}$",
 	    message = "Formato targa non valido (es: AB123CD)"
 	)
 	private String targa;
