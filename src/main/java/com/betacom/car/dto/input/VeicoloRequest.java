@@ -7,16 +7,16 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class VeicoloRequest {
+public abstract class VeicoloRequest {
 	
     private Integer id;
-    private Integer id_colore;
-    private Integer id_marca;
-    private Integer id_modello;
-    private Integer id_tipo_alimentazione;
-    private Integer id_categoria;
-    private Integer id_tipo_veicolo;         
-    private Integer numero_ruote;
-    private int anno_produzione;
+    private String colore;
+    private String marca;
+    private String modello;
+    private String alimentazione;
+    private String categoria;
+    private String tipoVeicolo;         
+    private Integer numeroRuote;
+    private Integer annoProduzione;
 	
 }

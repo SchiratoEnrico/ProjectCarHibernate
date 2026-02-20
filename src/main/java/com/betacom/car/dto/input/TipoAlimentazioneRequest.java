@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class TipoAlimentazioneRequest {
 	
-	private Integer id_tipo_alimentazione;
-	 private String tipo_alimentazione;
+	private Integer id;
+	 private String tipoAlimentazione;
 	
 }

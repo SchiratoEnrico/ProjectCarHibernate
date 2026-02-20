@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public class ColoreRequest {
-	 private Integer id_colore;
+	 private Integer id;
 	 private String colore;
 	 
 }

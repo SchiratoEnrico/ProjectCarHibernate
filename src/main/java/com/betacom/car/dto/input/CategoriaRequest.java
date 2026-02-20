@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class CategoriaRequest {
 
-    private Integer id_categoria;
+    private Integer id;
     private String categoria;
     
 }

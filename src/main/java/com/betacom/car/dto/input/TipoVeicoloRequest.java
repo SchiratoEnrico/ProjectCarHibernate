@@ -9,6 +9,6 @@ import lombok.ToString;
 @ToString
 public class TipoVeicoloRequest {
 
-	 private Integer id_tipo_veicolo;
-	 private String tipo_veicolo;
+	 private Integer id;
+	 private String tipoVeicolo;
 }

@@ -10,7 +10,7 @@ import lombok.ToString;
 public class MotoRequest extends VeicoloRequest {
 	
 	private Integer cc;
-	private int numero_marce;
+	private Integer numeroMarce;
 	private String targa;
 
 }

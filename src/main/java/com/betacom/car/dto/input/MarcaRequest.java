@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class MarcaRequest {
 	
-	 private Integer id_marca;
+	 private Integer id;
 	 private String marca;
 
 }

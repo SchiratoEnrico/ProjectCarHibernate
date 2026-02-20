@@ -9,9 +9,9 @@ import lombok.ToString;
 @ToString
 public class BiciRequest extends VeicoloRequest{
 
-	    private Integer numero_marce;
-	    private Integer id_tipo_freno;
-	    private Integer id_tipo_sospensione;
-	    private boolean pieghevole;
+	    private Integer numeroMarce;
+	    private String freno;
+	    private String sospensione;
+	    private Boolean pieghevole;
 	    
 }

@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class MacchinaRequest extends VeicoloRequest{
 	
-	private Integer numero_porte;
+	private Integer numeroPorte;
 	private Integer cc;
 	private String targa;
 

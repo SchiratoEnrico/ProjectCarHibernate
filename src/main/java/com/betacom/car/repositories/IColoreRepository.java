@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.betacom.car.models.Colore;
 
 @Repository
-public interface IColoreRepository extends JpaRepository<Colore, Integer>  {
+public interface IColoreRepository extends JpaRepository<Colore, Integer>{
+
 }
