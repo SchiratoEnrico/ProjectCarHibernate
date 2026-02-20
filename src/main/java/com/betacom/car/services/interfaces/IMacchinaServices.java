@@ -1,5 +1,8 @@
 package com.betacom.car.services.interfaces;
 
-public interface IMacchinaServices {
+import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.dto.output.MacchinaDTO;
+
+public interface IMacchinaServices  extends IBigModelsServices<MacchinaRequest, MacchinaDTO, Integer>{
 
 }
