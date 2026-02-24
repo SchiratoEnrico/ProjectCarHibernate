@@ -21,16 +21,15 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-
 public class Utils {
-	private final static IColoreRepository repCol;
-	private final static IMarcaRepository repMar;
-	private final static IMessagesServices msgS;
-	private final static ITipoAlimentazioneRepository repAli;
-	private final static ITipoVeicoloRepository repVei;
-	private final static ICategoriaRepository repCat;
+	private final IColoreRepository repCol;
+	private final IMarcaRepository repMar;
+	private final IMessagesServices msgS;
+	private final ITipoAlimentazioneRepository repAli;
+	private final ITipoVeicoloRepository repVei;
+	private final ICategoriaRepository repCat;
 
-	public static Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
+	public Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
 		Colore col = repCol.findByColore(req.getColore()).orElseThrow(() ->
 						new VeicoloException(msgS.get("null_col")));
 		v.setColore(col);
