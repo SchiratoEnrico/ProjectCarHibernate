@@ -66,4 +66,9 @@ public abstract class Veicolo {
 			nullable = false
 			)
 	private Integer annoProduzione;
+	
+	@Column(
+			name = "modello"
+			)
+	private String modello;
 }

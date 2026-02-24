@@ -1,11 +1,7 @@
 package com.betacom.car.services.implementations;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.betacom.car.models.Messages;
 import com.betacom.car.repositories.IMessaggiRepository;
 import com.betacom.car.services.interfaces.IMessagesServices;
 
@@ -19,7 +15,6 @@ public class MessagesImplementation implements IMessagesServices{
 
 	private final IMessaggiRepository repM;
 
-
 	@Override
 	public String get(String code){
 		
@@ -28,8 +23,7 @@ public class MessagesImplementation implements IMessagesServices{
 			msg = repM.findByCode(code).get().getMessaggio();
 		} catch (Exception e) {
 			return null;
-		}
-		
+		}	
 		return msg;
 	}
 }

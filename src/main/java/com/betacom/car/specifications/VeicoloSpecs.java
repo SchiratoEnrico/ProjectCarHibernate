@@ -59,7 +59,15 @@ public class VeicoloSpecs {
             if (f.getIdTipoAlimentazione() != null) {
                 p.add(cb.equal(root.join("tipoAlimentazione", JoinType.INNER).get("id"), f.getIdTipoAlimentazione()));
             }
+            
+            if (f.getIdTipoVeicolo() != null) {
+                p.add(cb.equal(root.join("tipoVeicolo", JoinType.INNER).get("id"), f.getIdTipoVeicolo()));
+            }
 
+            
+            //da aggingere modello
+            
+            
             //qui in pratica se la lista dei filtri è vuota restituisco true, se ci sono filtri li unico con AND
             return p.isEmpty() ? cb.conjunction() : cb.and(p.toArray(new Predicate[0]));
         };
