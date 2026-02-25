@@ -59,26 +59,51 @@ public class Utils {
 
 	public Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
 		
-		Colore col = repCol.findByColore(req.getColore()).orElseThrow(() ->
-						new VeicoloException(msgS.get("null_col")));
-		v.setColore(col);
+		if (req.getColore() != null && (req.getColore().isBlank())) {
+			String c = req.getColore().trim().toUpperCase();
+			Colore col = repCol.findByColore(c).orElseThrow(() ->
+								new VeicoloException(msgS.get("null_col")));
+			v.setColore(col);
+		} else {
+			throw new VeicoloException(msgS.get("null_col"));
+		}
 
-		Marca mar = repMar.findByMarca(req.getMarca()).orElseThrow(() ->
-						new VeicoloException(msgS.get("null_mar")));
-		v.setMarca(mar);
+		if (req.getMarca() != null && (req.getMarca().isBlank())) {
+			String m = req.getMarca().trim().toUpperCase();
+			Marca mar = repMar.findByMarca(m).orElseThrow(() ->
+								new VeicoloException(msgS.get("null_mar")));
+			v.setMarca(mar);
+		} else {
+			throw new VeicoloException(msgS.get("null_col"));
+		}
+
+		if (req.getAlimentazione() != null && (req.getAlimentazione().isBlank())) {
+			String t = req.getAlimentazione().trim().toUpperCase();
+			TipoAlimentazione tA = repAli.findByTipoAlimentazione(t).orElseThrow(() ->
+								new VeicoloException(msgS.get("null_mar")));
+			v.setTipoAlimentazione(tA);
+		} else {
+			throw new VeicoloException(msgS.get("null_ali"));
+		}
 		
-		TipoAlimentazione tA = repAli.findByTipoAlimentazione(req.getAlimentazione()).orElseThrow(() ->
-						new VeicoloException(msgS.get("null_ali")));
-		v.setTipoAlimentazione(tA);
+		if (req.getCategoria() != null && (req.getCategoria().isBlank())) {
+			String c = req.getCategoria().trim().toUpperCase();
+			Categoria cat = repCat.findByCategoria(c).orElseThrow(() ->
+								new VeicoloException(msgS.get("null_mar")));
+			v.setCategoria(cat);
+		} else {
+			throw new VeicoloException(msgS.get("null_mar"));
+		}
 		
-		Categoria cat = repCat.findByCategoria(req.getCategoria()).orElseThrow(() ->
-						new VeicoloException(msgS.get("null_cat")));
-		v.setCategoria(cat);
-		
-		TipoVeicolo tV = repVei.findByTipoVeicolo(req.getTipoVeicolo()).orElseThrow(() ->
-						new VeicoloException(msgS.get("null_vei")));
-		v.setTipoVeicolo(tV);
-		
+		if (req.getTipoVeicolo() != null && (req.getTipoVeicolo().isBlank())) {
+			String c = req.getTipoVeicolo().trim().toUpperCase();
+			TipoVeicolo tV = repVei.findByTipoVeicolo(c).orElseThrow(() ->
+								new VeicoloException(msgS.get("null_vei")));
+			v.setTipoVeicolo(tV);
+		} else {
+			throw new VeicoloException(msgS.get("null_vei"));
+		}
+				
 		if (req.getAnnoProduzione() != null) {
 			v.setAnnoProduzione(req.getAnnoProduzione());
 		} else {
@@ -97,42 +122,49 @@ public class Utils {
 	}
 
 	public Veicolo optReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
+		if (req.getColore() != null && (req.getColore().isBlank())) {
+			String c = req.getColore().trim().toUpperCase();
+			Optional<Colore> col = repCol.findByColore(c);
+			if (!col.isEmpty()) {
+				v.setColore(col.get());
+			}
+		}
 		
-		
-		Optional<Colore> col = repCol.findByColore(req.getColore());
-		if (!col.isEmpty()) {
-			v.setColore(col.get());
-			log.debug("dentro colore");
-		}
-		log.debug("prima marca");
-		Optional<Marca> mar = repMar.findByMarca(req.getMarca());
-		if (!mar.isEmpty()) {
-			v.setMarca(mar.get());
-			log.debug("dentro marca");
+		if (req.getMarca() != null && (req.getMarca().isBlank())) {
+			String m = req.getMarca().trim().toUpperCase();
+			Optional<Marca> mar = repMar.findByMarca(m);
+			if (!mar.isEmpty()) {
+				v.setMarca(mar.get());
+			}
 		}
 
-
-		log.debug("prima alimen");
-		Optional<TipoAlimentazione> tA = repAli.findByTipoAlimentazione(req.getAlimentazione());
-		if (tA.isPresent()) {
-			v.setTipoAlimentazione(tA.get());
-		}
-		log.debug("prima categoira");
-		Optional<Categoria> cat = repCat.findByCategoria(req.getCategoria());
-		if (cat.isPresent()) {
-			v.setCategoria(cat.get());
-		}
-		log.debug("prima tiop veic");
-		Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(req.getTipoVeicolo());
-		if (tV.isPresent()) {
-			v.setTipoVeicolo(tV.get());
+		if (req.getAlimentazione() != null && (req.getAlimentazione().isBlank())) {
+			String tA = req.getAlimentazione().trim().toUpperCase();
+			Optional<TipoAlimentazione> ta = repAli.findByTipoAlimentazione(tA);
+			if (!ta.isEmpty()) {
+				v.setTipoAlimentazione(ta.get());
+			}
 		}
 
-		log.debug("prima anno");
+		if (req.getCategoria() != null && (req.getCategoria().isBlank())) {
+			String cat = req.getCategoria().trim().toUpperCase();
+			Optional<Categoria> c = repCat.findByCategoria(cat);
+			if (!c.isEmpty()) {
+				v.setCategoria(c.get());
+			}
+		}
+
+		if (req.getTipoVeicolo() != null && (req.getTipoVeicolo().isBlank())) {
+			String tv = req.getTipoVeicolo().trim().toUpperCase();
+			Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(tv);
+			if (!tV.isEmpty()) {
+				v.setTipoVeicolo(tV.get());
+			}
+		}
+
 		if (req.getAnnoProduzione() != null) {
 			v.setAnnoProduzione(req.getAnnoProduzione());
 		} 
-		log.debug("dopo anno");
 		
 		if (req.getNumeroRuote() != null ) {
 			v.setNumeroRuote(req.getNumeroRuote());
@@ -141,9 +173,6 @@ public class Utils {
 		if ((req.getModello() != null) && (!req.getModello().isBlank()) ) {
 			v.setModello(req.getModello());
 		}
-		
-		
-		
 		return v;
 	}
 	public static CategoriaDTO buildCategoriaDTO(Categoria c) {		
