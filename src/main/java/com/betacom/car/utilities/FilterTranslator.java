@@ -1,5 +1,7 @@
 package com.betacom.car.utilities;
 
+import org.springframework.stereotype.Service;
+
 import com.betacom.car.dto.filters.BiciFilter;
 import com.betacom.car.dto.filters.MacchinaFilter;
 import com.betacom.car.dto.filters.MotoFilter;
@@ -20,6 +22,7 @@ import com.betacom.car.services.interfaces.IMessagesServices;
 
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public  class FilterTranslator {
 	
@@ -137,7 +140,7 @@ public  class FilterTranslator {
         destination.setNumeroRuote(origin.getNumeroRuote());
         destination.setAnno(origin.getAnno());
         destination.setIdMarca(origin.getIdMarca());
-        destination.setIdModello(origin.getIdModello());
+        destination.setModello(origin.getModello());
         destination.setIdColore(origin.getIdColore());
         destination.setIdCategoria(origin.getIdCategoria());
         destination.setIdTipoAlimentazione(origin.getIdTipoAlimentazione());
