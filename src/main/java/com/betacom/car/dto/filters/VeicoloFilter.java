@@ -14,7 +14,7 @@ public abstract class VeicoloFilter {
 	    private Integer anno;
 
 	    private Integer idMarca;
-	    private Integer idModello;
+	    private String modello;
 	    private Integer idColore;
 	    private Integer idCategoria;
 	    private Integer idTipoAlimentazione;
