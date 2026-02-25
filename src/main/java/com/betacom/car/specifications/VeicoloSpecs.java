@@ -33,6 +33,11 @@ public class VeicoloSpecs {
             
             //questo è l'equivalente di fare numeroRuote = ?  in sql
             //root.get("numeroRuote) è il campo della entity, ovvero Veicolo
+            
+            if (f.getId() != null) {
+                p.add(cb.equal(root.get("id"), f.getId()));
+            }
+            
             if (f.getNumeroRuote() != null) {
                 p.add(cb.equal(root.get("numeroRuote"), f.getNumeroRuote()));
             }

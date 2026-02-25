@@ -3,6 +3,7 @@ package com.betacom.car.services.implementations;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import com.betacom.car.repositories.ITipoFrenoRepository;
 import com.betacom.car.repositories.ITipoSospensioneRepository;
 import com.betacom.car.services.interfaces.IBiciclettaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
+import com.betacom.car.specifications.BiciSpecs;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,9 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	@Transactional (rollbackFor = Exception.class)
 	public Integer create(BiciRequest req) throws VeicoloException {
 		log.debug("creating Bicicletta {}", req);
+		log.debug("prima check req");
 		Bicicletta b = checkReq(req);
+		log.debug("dopo check req");
 		Integer id = repB.save(b).getId();
 		return id;
 	}
@@ -83,20 +87,21 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	public List<BiciclettaDTO> filter(BiciFilter filter) {
 			
 			//faccio le specification col filter
-			//Specification<Bicicletta> spec = BiciSpecs.withFilter(filter);
+			Specification<Bicicletta> spec = BiciSpecs.withFilter(filter);
 
 			//faccio il find applicando i filtri
-		    //List<Bicicletta> entities = repB.findAll(spec);
+		    List<Bicicletta> entities = repB.findAll(spec);
 			
-			
-			//da ssitemare il return
-			return null;
+			return entities.stream()
+							.map(e -> Utils.buildBiciclettaDTO(e))
+							.collect(Collectors.toList());
 		}
 
 	private Bicicletta checkReq(BiciRequest breq) throws VeicoloException {
 		Bicicletta b = new Bicicletta();
-		
-		b = (Bicicletta) ut.checkReq(breq, b);
+		log.debug("prima di checkreq campi comuni");
+		ut.checkReq(breq, b);
+		log.debug("dopo di checkreq campi comuni");
 		
 		if (breq.getNumeroMarce() != null) {
 			b.setNumeroMarce(breq.getNumeroMarce());

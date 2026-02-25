@@ -3,12 +3,16 @@ package com.betacom.car.dto.filters;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 public abstract class VeicoloFilter {	
-
+		
+		private Integer id;
+	
 	    private Integer numeroRuote;
 
 	    private Integer anno;

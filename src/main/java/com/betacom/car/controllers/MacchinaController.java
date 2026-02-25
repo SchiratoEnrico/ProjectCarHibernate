@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.car.dto.filters.MacchinaFilter;
+import com.betacom.car.dto.input.MacchinaFilterRequest;
 import com.betacom.car.dto.input.MacchinaRequest;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
-
+import com.betacom.car.utilities.FilterTranslator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,7 @@ public class MacchinaController {
 	
 	private final IMacchinaServices macchinaS;
 	private final IMessagesServices msgS;
+	private final FilterTranslator filtT;
 
 	@PostMapping("/create")
     public ResponseEntity<Resp> create(@RequestBody(required = true) MacchinaRequest req) {
@@ -105,13 +107,14 @@ public class MacchinaController {
 	
 	@GetMapping("/filter")
 	public ResponseEntity<Object> filter(
+			@RequestParam(required = false) Integer id,
 	        @RequestParam(required = false) Integer numeroRuote,
 	        @RequestParam(required = false) Integer anno,
-	        @RequestParam(required = false) Integer idMarca,
-	        @RequestParam(required = false) Integer idColore,
-	        @RequestParam(required = false) Integer idCategoria,
-	        @RequestParam(required = false) Integer idTipoAlimentazione,
-	        @RequestParam(required = false) Integer idTipoVeicolo,
+	        @RequestParam(required = false) String marca,
+	        @RequestParam(required = false) String colore,
+	        @RequestParam(required = false) String categoria,
+	        @RequestParam(required = false) String tipoAlimentazione,
+	        @RequestParam(required = false) String tipoVeicolo,
 	        // campi specifici di MacchinaFilter
 	        @RequestParam(required = false) String targa,
 	        @RequestParam(required = false) Integer numeroPorte,
@@ -121,21 +124,23 @@ public class MacchinaController {
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
-	        MacchinaFilter filter = new MacchinaFilter();
-	        // campi ereditati da VeicoloFilter
-	        filter.setNumeroRuote(numeroRuote);
-	        filter.setAnno(anno);
-	        filter.setIdMarca(idMarca);
-	        filter.setIdColore(idColore);
-	        filter.setIdCategoria(idCategoria);
-	        filter.setIdTipoAlimentazione(idTipoAlimentazione);
-	        filter.setIdTipoVeicolo(idTipoVeicolo);
-	        // campi specifici macchina
-	        filter.setTarga(targa);
-	        filter.setNumeroPorte(numeroPorte);
-	        filter.setCc(cc);
-
+			
+	    	MacchinaFilter filter = filtT.toMacchinaFilter(MacchinaFilterRequest.builder()
+	        		.id(id)
+	    			.numeroRuote(numeroRuote)
+	        		.anno(anno)
+	        		.marca(marca)
+	        		.colore(colore)
+	        		.categoria(categoria)
+	        		.tipoAlimentazione(tipoAlimentazione)
+	        		.tipoVeicolo(tipoVeicolo)
+	        		.targa(targa)
+	        		.numeroPorte(numeroPorte)
+	        		.cc(cc)
+	        		.build());
+	   
 	        r = macchinaS.filter(filter);
+	    
 	    } catch (Exception e) {
 	        r = e.getMessage();
 	        status = HttpStatus.BAD_REQUEST;

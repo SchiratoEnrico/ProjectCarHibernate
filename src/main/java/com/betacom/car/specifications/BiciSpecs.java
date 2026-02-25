@@ -6,13 +6,14 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.betacom.car.dto.filters.BiciFilter;
+import com.betacom.car.models.Bicicletta;
 
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 
 public class BiciSpecs {
 
-    public static Specification<BiciSpecs> withFilter(BiciFilter f) {
+    public static Specification<Bicicletta> withFilter(BiciFilter f) {
         return (root, query, cb) -> {
 
             if (f == null) return cb.conjunction();

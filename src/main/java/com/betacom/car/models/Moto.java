@@ -42,8 +42,8 @@ public class Moto extends Veicolo{
 	
 	@Column(name = "targa", nullable = false, unique = true)
 	@Pattern(
-	    regexp = "^[XY][BCDFGHJKLMNPRSTVWXYZ2-9]{5}$",
-	    message = "Formato targa non valido (es: AB123CD)"
-	)
+		    regexp = "^[A-HJ-NPR-TV-Z]{2}[0-9]{3}[A-HJ-NPR-TV-Z]{2}$",
+		    message = "Formato targa non valido (es: AB123CD)"
+		)
 	private String targa;
 }

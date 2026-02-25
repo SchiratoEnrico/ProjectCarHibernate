@@ -36,14 +36,19 @@ public  class FilterTranslator {
 	private final IMessagesServices msgS;
 	
 	
-	private VeicoloFilter toVeicoloFilter(VeicoloFilterRequest req) {
-        VeicoloFilter f = null;
+	private VeicoloFilter toVeicoloFilter(VeicoloFilter f, VeicoloFilterRequest req) {
+
         if (req == null) 
         	return f;
 
-        f.setNumeroRuote(req.getNumeroRuote());
-        f.setAnno(req.getAnno());
+        
 
+        if(req.getNumeroRuote() != null)
+        	f.setNumeroRuote(req.getNumeroRuote());
+        
+        if(req.getAnno() != null)
+        	f.setAnno(req.getAnno());
+        
         if (notBlank(req.getMarca())) {
             f.setIdMarca(findMarcaId(req.getMarca()));
         }
@@ -68,7 +73,7 @@ public  class FilterTranslator {
         
 		MacchinaFilter f = new MacchinaFilter();
 		
-		buildCommonFields(toVeicoloFilter(req), f);
+		buildCommonFields(toVeicoloFilter(f, req), f);
 
 		if (req.getCc() != null) {
 	        f.setCc(req.getCc());
@@ -89,7 +94,7 @@ public  class FilterTranslator {
         
 		MotoFilter f = new MotoFilter();
 		
-		buildCommonFields(toVeicoloFilter(req), f);
+		buildCommonFields(toVeicoloFilter(f, req), f);
 
 		if (req.getCc() != null) {
 	        f.setCc(req.getCc());
@@ -109,7 +114,7 @@ public  class FilterTranslator {
 	public BiciFilter toBiciFilter(BiciFilterRequest req) {
 		BiciFilter f = new BiciFilter();
 		
-		buildCommonFields(toVeicoloFilter(req), f);
+		buildCommonFields(toVeicoloFilter(f, req), f);
 		
 		if (req.getNumeroMarce() != null) {
 	        f.setNumeroMarce(req.getNumeroMarce());

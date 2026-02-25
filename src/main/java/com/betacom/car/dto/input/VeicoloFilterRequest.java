@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class VeicoloFilterRequest {
 	
+		private Integer id;
 	 	private Integer numeroRuote;
 	    private Integer anno;
 	    private String marca;

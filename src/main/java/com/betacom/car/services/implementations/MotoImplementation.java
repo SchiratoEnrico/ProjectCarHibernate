@@ -1,0 +1,163 @@
+package com.betacom.car.services.implementations;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.betacom.car.dto.filters.MotoFilter;
+import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.dto.input.MotoRequest;
+import com.betacom.car.dto.output.CategoriaDTO;
+import com.betacom.car.dto.output.ColoreDTO;
+import com.betacom.car.dto.output.MarcaDTO;
+import com.betacom.car.dto.output.MotoDTO;
+import com.betacom.car.dto.output.TipoAlimentazioneDTO;
+import com.betacom.car.dto.output.TipoVeicoloDTO;
+import com.betacom.car.dto.output.VeicoloDTO;
+import com.betacom.car.exceptions.VeicoloException;
+import com.betacom.car.models.Macchina;
+import com.betacom.car.models.Moto;
+import com.betacom.car.models.Veicolo;
+import com.betacom.car.repositories.IColoreRepository;
+import com.betacom.car.repositories.IMotoRepository;
+import com.betacom.car.repositories.IVeicoloRepository;
+import com.betacom.car.services.interfaces.IMessagesServices;
+import com.betacom.car.services.interfaces.IMotoServices;
+import com.betacom.car.specifications.MotoSpecs;
+import com.betacom.car.utilities.Utils;
+
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
+@Service
+public class MotoImplementation implements IMotoServices{
+
+	private final Utils utils;
+	private final IMessagesServices msgS;
+	private final IMotoRepository repM;
+	private final IVeicoloRepository repV;
+	
+	@Transactional (rollbackFor = VeicoloException.class)
+	@Override
+	public Integer create(MotoRequest req) throws VeicoloException {
+		log.debug("create {}", req);
+
+		Moto mot = new Moto();
+		
+		mot = checkReqMoto(req, mot);
+		log.debug("dopo check req");
+		if (repM.findByTarga(req.getTarga()).isPresent())
+            throw new VeicoloException(msgS.get("targa_exists"));
+		
+		int id = repM.save(mot).getId();
+		return id;
+	}
+
+	@Override
+	public void delete(Integer id) throws VeicoloException {
+		log.debug("delete {}", id);
+		
+		Moto mot = repM.findById(id)
+				.orElseThrow(() -> new VeicoloException("Moto non trovata in DB: "+id));
+		
+		repM.delete(mot);
+	}
+
+	@Override
+	public void update(MotoRequest req) throws VeicoloException {
+		log.debug("create {}", req);
+
+		Moto mot = repM.findById(req.getId()).orElseThrow(()-> new VeicoloException(msgS.get("null_mot")));
+		
+		mot = optReqMoto(req, mot);
+		
+		repM.save(mot);
+
+	}
+
+	@Override
+	public List<MotoDTO> findAll() throws VeicoloException {
+		log.debug("findAll");
+		List<Moto> lM = repM.findAll();
+		
+		return lM.stream()
+                .map(m -> Utils.buildMotoDTO(m))
+                		.toList();
+	}
+
+	@Override
+	public MotoDTO findById(Integer id) throws VeicoloException {
+		log.debug("findById: {}", id);
+		Moto m = repM.findById(id)
+				.orElseThrow(() -> new VeicoloException("Moto non trovata: "+id));
+		
+		return Utils.buildMotoDTO(m);
+	}
+
+
+	@Override
+	public List<MotoDTO> filter(MotoFilter filter) {
+		Specification<Moto> spec = MotoSpecs.withFilter(filter);
+		List<Moto> entities = repM.findAll(spec);
+		
+		return entities.stream()
+				.map(m->Utils.buildMotoDTO(m))
+				.toList();
+	}
+	
+	
+	public Moto checkReqMoto(MotoRequest req, Moto m) throws VeicoloException {
+
+        // richiama il checkReq del veicolo per i campi comuni
+	    log.debug("prima chekc req veicolo");
+        utils.checkReq(req, m);
+        log.debug("dopo chekc req veicolo");
+        if (req.getCc() != null)
+            m.setCc(req.getCc());
+        else
+            throw new VeicoloException(msgS.get("null_cc"));
+
+        if (req.getNumeroMarce() != null)
+            m.setNumeroMarce(req.getNumeroMarce());
+        else
+            throw new VeicoloException(msgS.get("null_mar"));
+
+        if (req.getTarga() != null && !req.getTarga().isBlank())
+            m.setTarga(req.getTarga().toUpperCase());
+        else
+            throw new VeicoloException(msgS.get("null_tar"));
+
+        return m;
+    }
+ 
+ 
+	public Moto optReqMoto(MotoRequest req, Moto m) throws VeicoloException {
+
+        // richiama il checkReq del veicolo per i campi comuni
+        utils.optReq(req, m);
+
+        if (req.getCc() != null)
+            m.setCc(req.getCc());
+
+
+        if (req.getNumeroMarce() != null)
+            m.setNumeroMarce(req.getNumeroMarce());
+
+
+        if (req.getTarga() != null && !req.getTarga().isBlank())
+            m.setTarga(req.getTarga().toUpperCase());
+        
+        log.debug("dopo opt req {}", m);
+
+        return m;
+    }
+
+}

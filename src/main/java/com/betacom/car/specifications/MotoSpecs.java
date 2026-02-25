@@ -2,12 +2,12 @@ package com.betacom.car.specifications;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.betacom.car.dto.filters.MacchinaFilter;
+import com.betacom.car.dto.filters.MotoFilter;
 import com.betacom.car.models.Moto;
 
 public class MotoSpecs {
 	
-	public static Specification<Moto> withFilter(MacchinaFilter f) {
+	public static Specification<Moto> withFilter(MotoFilter f) {
 
     	//inizio con i filtri comuni quindi uso veicolospecs
         Specification<Moto> spec = VeicoloSpecs.baseFilter(f);
@@ -23,8 +23,8 @@ public class MotoSpecs {
         }
 
         //numeroPorte = ?
-        if (f.getNumeroPorte() != null) {
-            spec = spec.and((root, query, cb) -> cb.equal(root.get("numeroMarce"), f.getNumeroPorte()));
+        if (f.getNumeroMarce() != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("numeroMarce"), f.getNumeroMarce()));
         }
         
         //UPPER(targa) like '%targachepasso%'

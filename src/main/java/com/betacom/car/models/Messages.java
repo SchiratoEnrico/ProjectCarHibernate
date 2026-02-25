@@ -16,10 +16,8 @@ public class Messages {
 	
 	//vogliamo fare una chiave composta
 	
+
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private String id;
-	
 	private String code;
 	
 	private String messaggio;

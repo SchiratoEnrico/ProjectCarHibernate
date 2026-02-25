@@ -13,6 +13,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class MotoFilterRequest extends VeicoloFilterRequest{
 
+	
+	
 	private Integer cc;
 
     private Integer numeroMarce;

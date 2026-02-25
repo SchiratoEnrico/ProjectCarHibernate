@@ -71,7 +71,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 			String myT = req.getTipoAlimentazione().trim().toUpperCase();
 			Optional<TipoAlimentazione> t = repTA.findByTipoAlimentazione(myT);
 			if (t.isEmpty()) {
-				tA.setTipoAlimentazione(req.getTipoAlimentazione());
+				tA.setTipoAlimentazione(myT);
 				repTA.save(tA);			}
 			else {
 				throw new VeicoloException("dup_vei");

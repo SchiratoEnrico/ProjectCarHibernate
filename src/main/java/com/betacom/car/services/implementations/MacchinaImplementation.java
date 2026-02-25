@@ -67,8 +67,11 @@ public class MacchinaImplementation implements IMacchinaServices{
 
         Macchina m = repM.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
-
-        checkReqMacc(req, m);
+        log.debug("trovato");
+        
+        m = optReqMacc(req, m);
+        
+        log.debug("");
         repM.save(m);
 		
 	}
@@ -127,6 +130,28 @@ public class MacchinaImplementation implements IMacchinaServices{
 	            m.setTarga(req.getTarga().toUpperCase());
 	        else
 	            throw new VeicoloException(msgS.get("null_targa"));
+
+	        return m;
+	    }
+	 
+	 
+	 public Macchina optReqMacc(MacchinaRequest req, Macchina m) throws VeicoloException {
+
+	        // richiama il checkReq del veicolo per i campi comuni
+	        utils.optReq(req, m);
+
+	        if (req.getCc() != null)
+	            m.setCc(req.getCc());
+
+
+	        if (req.getNumeroPorte() != null)
+	            m.setNumeroPorte(req.getNumeroPorte());
+
+
+	        if (req.getTarga() != null && !req.getTarga().isBlank())
+	            m.setTarga(req.getTarga().toUpperCase());
+	        
+	        log.debug("dopo opt req {}", m);
 
 	        return m;
 	    }

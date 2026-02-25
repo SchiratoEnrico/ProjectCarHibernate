@@ -6,7 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-
+import com.betacom.car.controllers.CategoriaController;
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.MacchinaRequest;
 import com.betacom.car.dto.input.VeicoloRequest;
 import com.betacom.car.dto.output.BiciclettaDTO;
@@ -14,6 +15,7 @@ import com.betacom.car.dto.output.CategoriaDTO;
 import com.betacom.car.dto.output.ColoreDTO;
 import com.betacom.car.dto.output.MacchinaDTO;
 import com.betacom.car.dto.output.MarcaDTO;
+import com.betacom.car.dto.output.MotoDTO;
 import com.betacom.car.dto.output.TipoAlimentazioneDTO;
 import com.betacom.car.dto.output.TipoFrenoDTO;
 import com.betacom.car.dto.output.TipoSospensioneDTO;
@@ -25,6 +27,7 @@ import com.betacom.car.models.Categoria;
 import com.betacom.car.models.Colore;
 import com.betacom.car.models.Macchina;
 import com.betacom.car.models.Marca;
+import com.betacom.car.models.Moto;
 import com.betacom.car.models.TipoAlimentazione;
 import com.betacom.car.models.TipoFreno;
 import com.betacom.car.models.TipoSospensione;
@@ -38,10 +41,13 @@ import com.betacom.car.repositories.ITipoVeicoloRepository;
 import com.betacom.car.services.interfaces.IMessagesServices;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class Utils {
+
 	private final IColoreRepository repCol;
 	private final IMarcaRepository repMar;
 	private final IMessagesServices msgS;
@@ -49,7 +55,10 @@ public class Utils {
 	private final ITipoVeicoloRepository repVei;
 	private final ICategoriaRepository repCat;
 
+
+
 	public Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
+		
 		Colore col = repCol.findByColore(req.getColore()).orElseThrow(() ->
 						new VeicoloException(msgS.get("null_col")));
 		v.setColore(col);
@@ -88,37 +97,42 @@ public class Utils {
 	}
 
 	public Veicolo optReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
+		
+		
 		Optional<Colore> col = repCol.findByColore(req.getColore());
 		if (!col.isEmpty()) {
 			v.setColore(col.get());
+			log.debug("dentro colore");
 		}
-
+		log.debug("prima marca");
 		Optional<Marca> mar = repMar.findByMarca(req.getMarca());
-		if (!col.isEmpty()) {
+		if (!mar.isEmpty()) {
 			v.setMarca(mar.get());
+			log.debug("dentro marca");
 		}
 
 
-		
+		log.debug("prima alimen");
 		Optional<TipoAlimentazione> tA = repAli.findByTipoAlimentazione(req.getAlimentazione());
 		if (tA.isPresent()) {
 			v.setTipoAlimentazione(tA.get());
 		}
-		
+		log.debug("prima categoira");
 		Optional<Categoria> cat = repCat.findByCategoria(req.getCategoria());
 		if (cat.isPresent()) {
 			v.setCategoria(cat.get());
 		}
-		
+		log.debug("prima tiop veic");
 		Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(req.getTipoVeicolo());
 		if (tV.isPresent()) {
 			v.setTipoVeicolo(tV.get());
 		}
 
-		
+		log.debug("prima anno");
 		if (req.getAnnoProduzione() != null) {
 			v.setAnnoProduzione(req.getAnnoProduzione());
 		} 
+		log.debug("dopo anno");
 		
 		if (req.getNumeroRuote() != null ) {
 			v.setNumeroRuote(req.getNumeroRuote());
@@ -127,6 +141,8 @@ public class Utils {
 		if ((req.getModello() != null) && (!req.getModello().isBlank()) ) {
 			v.setModello(req.getModello());
 		}
+		
+		
 		
 		return v;
 	}
@@ -201,6 +217,18 @@ public class Utils {
 						.build();
 	}
 	
+	private static void buildCommonFields(VeicoloDTO origin, VeicoloDTO destination) {
+        destination.setIdVeicolo(origin.getIdVeicolo());
+		destination.setNumeroRuote(origin.getNumeroRuote());
+        destination.setAnnoProduzione(origin.getAnnoProduzione());
+        destination.setMarca(origin.getMarca());
+        destination.setModello(origin.getModello());
+        destination.setTipoVeicolo(origin.getTipoVeicolo());
+        destination.setColore(origin.getColore());
+        destination.setCategoria(origin.getCategoria());
+        destination.setTipoAlimentazione(origin.getTipoAlimentazione());
+    }
+	
 	public static TipoFrenoDTO buildTipoFrenoDTO(TipoFreno t) {		
 		return TipoFrenoDTO.builder()
 						   .tipoFreno(t.getTipoFreno())
@@ -216,7 +244,12 @@ public class Utils {
 	}
 
 	public static BiciclettaDTO buildBiciclettaDTO(Bicicletta b) {
-		BiciclettaDTO bDto = (BiciclettaDTO) buildVeicoloDTO(b);
+		
+
+		VeicoloDTO v = buildVeicoloDTO(b);
+		BiciclettaDTO bDto = new BiciclettaDTO();
+		
+		buildCommonFields(v, bDto);
 		
 		bDto.setNumeroMarce(b.getNumeroMarce());
 		bDto.setTipoFreno(buildTipoFrenoDTO(b.getFreno()));
@@ -227,10 +260,29 @@ public class Utils {
 	}
 	
 	public static MacchinaDTO buildMacchinaDTO(Macchina m) {
-	    MacchinaDTO dto = (MacchinaDTO) buildVeicoloDTO(m);
+	    
+		VeicoloDTO v = buildVeicoloDTO(m);
+		MacchinaDTO dto = new MacchinaDTO();
+		
+		buildCommonFields(v, dto);
+
 
 	    dto.setCc(m.getCc());
 	    dto.setNumeroPorte(m.getNumeroPorte());
+	    dto.setTarga(m.getTarga());
+
+	    return dto;
+	}
+
+	public static MotoDTO buildMotoDTO(Moto m) {
+		VeicoloDTO v = buildVeicoloDTO(m);
+		MotoDTO dto = new MotoDTO();
+		
+		buildCommonFields(v, dto);
+
+
+	    dto.setCc(m.getCc());
+	    dto.setNumeroMarce(m.getNumeroMarce());
 	    dto.setTarga(m.getTarga());
 
 	    return dto;

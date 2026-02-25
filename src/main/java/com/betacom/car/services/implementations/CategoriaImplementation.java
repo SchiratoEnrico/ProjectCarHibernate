@@ -9,7 +9,6 @@ import com.betacom.car.dto.input.CategoriaRequest;
 import com.betacom.car.dto.output.CategoriaDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Categoria;
-import com.betacom.car.models.Marca;
 import com.betacom.car.repositories.ICategoriaRepository;
 import com.betacom.car.services.interfaces.ICategoriaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -75,7 +74,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 			String myT = req.getCategoria().trim().toUpperCase();
 			Optional<Categoria> t = repC.findByCategoria(myT);
 			if (t.isEmpty()) {
-				c.setCategoria(req.getCategoria());
+				c.setCategoria(myT);
 				repC.save(c);			}
 			else {
 				throw new VeicoloException("dup_vei");
