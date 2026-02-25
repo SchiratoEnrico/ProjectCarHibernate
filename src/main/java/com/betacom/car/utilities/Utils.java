@@ -59,7 +59,7 @@ public class Utils {
 
 	public Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
 		
-		if (req.getColore() != null && (req.getColore().isBlank())) {
+		if (req.getColore() != null && (!req.getColore().isBlank())) {
 			String c = req.getColore().trim().toUpperCase();
 			Colore col = repCol.findByColore(c).orElseThrow(() ->
 								new VeicoloException(msgS.get("null_col")));
@@ -68,7 +68,7 @@ public class Utils {
 			throw new VeicoloException(msgS.get("null_col"));
 		}
 
-		if (req.getMarca() != null && (req.getMarca().isBlank())) {
+		if (req.getMarca() != null && (!req.getMarca().isBlank())) {
 			String m = req.getMarca().trim().toUpperCase();
 			Marca mar = repMar.findByMarca(m).orElseThrow(() ->
 								new VeicoloException(msgS.get("null_mar")));
@@ -77,7 +77,7 @@ public class Utils {
 			throw new VeicoloException(msgS.get("null_col"));
 		}
 
-		if (req.getAlimentazione() != null && (req.getAlimentazione().isBlank())) {
+		if (req.getAlimentazione() != null && (!req.getAlimentazione().isBlank())) {
 			String t = req.getAlimentazione().trim().toUpperCase();
 			TipoAlimentazione tA = repAli.findByTipoAlimentazione(t).orElseThrow(() ->
 								new VeicoloException(msgS.get("null_mar")));
@@ -86,7 +86,7 @@ public class Utils {
 			throw new VeicoloException(msgS.get("null_ali"));
 		}
 		
-		if (req.getCategoria() != null && (req.getCategoria().isBlank())) {
+		if (req.getCategoria() != null && (!req.getCategoria().isBlank())) {
 			String c = req.getCategoria().trim().toUpperCase();
 			Categoria cat = repCat.findByCategoria(c).orElseThrow(() ->
 								new VeicoloException(msgS.get("null_mar")));
@@ -95,7 +95,7 @@ public class Utils {
 			throw new VeicoloException(msgS.get("null_mar"));
 		}
 		
-		if (req.getTipoVeicolo() != null && (req.getTipoVeicolo().isBlank())) {
+		if (req.getTipoVeicolo() != null && (!req.getTipoVeicolo().isBlank())) {
 			String c = req.getTipoVeicolo().trim().toUpperCase();
 			TipoVeicolo tV = repVei.findByTipoVeicolo(c).orElseThrow(() ->
 								new VeicoloException(msgS.get("null_vei")));
@@ -122,7 +122,7 @@ public class Utils {
 	}
 
 	public Veicolo optReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
-		if (req.getColore() != null && (req.getColore().isBlank())) {
+		if (req.getColore() != null && (!req.getColore().isBlank())) {
 			String c = req.getColore().trim().toUpperCase();
 			Optional<Colore> col = repCol.findByColore(c);
 			if (!col.isEmpty()) {
@@ -130,7 +130,7 @@ public class Utils {
 			}
 		}
 		
-		if (req.getMarca() != null && (req.getMarca().isBlank())) {
+		if (req.getMarca() != null && (!req.getMarca().isBlank())) {
 			String m = req.getMarca().trim().toUpperCase();
 			Optional<Marca> mar = repMar.findByMarca(m);
 			if (!mar.isEmpty()) {
@@ -138,7 +138,7 @@ public class Utils {
 			}
 		}
 
-		if (req.getAlimentazione() != null && (req.getAlimentazione().isBlank())) {
+		if (req.getAlimentazione() != null && (!req.getAlimentazione().isBlank())) {
 			String tA = req.getAlimentazione().trim().toUpperCase();
 			Optional<TipoAlimentazione> ta = repAli.findByTipoAlimentazione(tA);
 			if (!ta.isEmpty()) {
@@ -146,7 +146,7 @@ public class Utils {
 			}
 		}
 
-		if (req.getCategoria() != null && (req.getCategoria().isBlank())) {
+		if (req.getCategoria() != null && (!req.getCategoria().isBlank())) {
 			String cat = req.getCategoria().trim().toUpperCase();
 			Optional<Categoria> c = repCat.findByCategoria(cat);
 			if (!c.isEmpty()) {
@@ -154,7 +154,7 @@ public class Utils {
 			}
 		}
 
-		if (req.getTipoVeicolo() != null && (req.getTipoVeicolo().isBlank())) {
+		if (req.getTipoVeicolo() != null && (!req.getTipoVeicolo().isBlank())) {
 			String tv = req.getTipoVeicolo().trim().toUpperCase();
 			Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(tv);
 			if (!tV.isEmpty()) {

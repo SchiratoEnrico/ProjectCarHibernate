@@ -37,8 +37,7 @@ public class ColoreImplementation implements IColoreServices{
             throw new VeicoloException(msgS.get("dup_col"));
 
         Colore c = new Colore();
-        c.setColore(req.getColore().toUpperCase());
-
+        c.setColore(myC);
         repC.save(c);
     }
 		
@@ -70,7 +69,7 @@ public class ColoreImplementation implements IColoreServices{
 
 		Colore c = repC.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("null_cid")));
-		if ((req.getColore()) != null && (!req.getColore().isEmpty())) {
+		if ((req.getColore() != null) && (!req.getColore().isEmpty())) {
 			String myC = req.getColore().trim().toUpperCase();
 			Optional<Colore> c2 = repC.findByColore(myC);
 			if (c2.isEmpty()) {

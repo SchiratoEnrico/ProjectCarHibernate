@@ -30,7 +30,7 @@ public class MarcaImplementation implements IMarcaServices{
 		log.debug("creating Marca {}", req);
 
 		Marca t = new Marca();
-		if ((req.getMarca() == null) && (req.getMarca().isBlank())) {
+		if ((req.getMarca() == null) | (req.getMarca().isBlank())) {
 			throw new VeicoloException("null_mar");
 		}
 		String myT = req.getMarca().trim().toUpperCase();
@@ -63,13 +63,12 @@ public class MarcaImplementation implements IMarcaServices{
 			String myT = req.getMarca().trim().toUpperCase();
 			Optional<Marca> t2 = repM.findByMarca(myT);
 			if (t2.isEmpty()) {
-				t.setMarca(req.getMarca());
+				t.setMarca(myT);
 				repM.save(t);			}
 			else {
 				throw new VeicoloException("dup_vei");
 			}
 		}
-		
 	}
 
 	@Override

@@ -1,37 +1,22 @@
 package com.betacom.car.services.implementations;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.car.dto.filters.MotoFilter;
-import com.betacom.car.dto.input.MacchinaRequest;
 import com.betacom.car.dto.input.MotoRequest;
-import com.betacom.car.dto.output.CategoriaDTO;
-import com.betacom.car.dto.output.ColoreDTO;
-import com.betacom.car.dto.output.MarcaDTO;
 import com.betacom.car.dto.output.MotoDTO;
-import com.betacom.car.dto.output.TipoAlimentazioneDTO;
-import com.betacom.car.dto.output.TipoVeicoloDTO;
-import com.betacom.car.dto.output.VeicoloDTO;
 import com.betacom.car.exceptions.VeicoloException;
-import com.betacom.car.models.Macchina;
 import com.betacom.car.models.Moto;
-import com.betacom.car.models.Veicolo;
-import com.betacom.car.repositories.IColoreRepository;
 import com.betacom.car.repositories.IMotoRepository;
-import com.betacom.car.repositories.IVeicoloRepository;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.specifications.MotoSpecs;
 import com.betacom.car.utilities.Utils;
 
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,7 +28,6 @@ public class MotoImplementation implements IMotoServices{
 	private final Utils utils;
 	private final IMessagesServices msgS;
 	private final IMotoRepository repM;
-	private final IVeicoloRepository repV;
 	
 	@Transactional (rollbackFor = VeicoloException.class)
 	@Override
@@ -54,7 +38,7 @@ public class MotoImplementation implements IMotoServices{
 		
 		mot = checkReqMoto(req, mot);
 		log.debug("dopo check req");
-		if (repM.findByTarga(req.getTarga()).isPresent())
+		if (repM.findByTarga(mot.getTarga()).isPresent())
             throw new VeicoloException(msgS.get("targa_exists"));
 		
 		int id = repM.save(mot).getId();
@@ -117,9 +101,9 @@ public class MotoImplementation implements IMotoServices{
 	public Moto checkReqMoto(MotoRequest req, Moto m) throws VeicoloException {
 
         // richiama il checkReq del veicolo per i campi comuni
-	    log.debug("prima chekc req veicolo");
+	    //log.debug("prima chekc req veicolo");
         utils.checkReq(req, m);
-        log.debug("dopo chekc req veicolo");
+        //log.debug("dopo chekc req veicolo");
         if (req.getCc() != null)
             m.setCc(req.getCc());
         else
@@ -131,7 +115,7 @@ public class MotoImplementation implements IMotoServices{
             throw new VeicoloException(msgS.get("null_mar"));
 
         if (req.getTarga() != null && !req.getTarga().isBlank())
-            m.setTarga(req.getTarga().toUpperCase());
+            m.setTarga(req.getTarga().trim().toUpperCase());
         else
             throw new VeicoloException(msgS.get("null_tar"));
 
@@ -153,9 +137,9 @@ public class MotoImplementation implements IMotoServices{
 
 
         if (req.getTarga() != null && !req.getTarga().isBlank())
-            m.setTarga(req.getTarga().toUpperCase());
+            m.setTarga(req.getTarga().trim().toUpperCase());
         
-        log.debug("dopo opt req {}", m);
+        //log.debug("dopo opt req {}", m);
 
         return m;
     }

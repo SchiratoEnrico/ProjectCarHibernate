@@ -99,9 +99,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 
 	private Bicicletta checkReq(BiciRequest breq) throws VeicoloException {
 		Bicicletta b = new Bicicletta();
-		log.debug("prima di checkreq campi comuni");
 		ut.checkReq(breq, b);
-		log.debug("dopo di checkreq campi comuni");
 		
 		if (breq.getNumeroMarce() != null) {
 			b.setNumeroMarce(breq.getNumeroMarce());
@@ -110,7 +108,8 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 		}
 		
 		if ((breq.getFreno()) != null && (!breq.getFreno().isEmpty())) {
-			TipoFreno tF = repFre.findByTipoFreno(breq.getFreno()).orElseThrow(() ->
+			String f = breq.getFreno().trim().toUpperCase();
+			TipoFreno tF = repFre.findByTipoFreno(f).orElseThrow(() ->
 							new VeicoloException(msgS.get("null_fre")));
 			b.setFreno(tF);
 		} else {
@@ -118,17 +117,8 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 		}
 		
 		if ((breq.getSospensione()) != null && (!breq.getSospensione().isEmpty())) {
-
-			TipoSospensione tS = repSos.findByTipoSospensione(breq.getSospensione()).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_sos")));
-			b.setSospensione(tS);
-		} else {
-			throw new VeicoloException(msgS.get("null_sos"));
-		}
-		
-		if ((breq.getSospensione()) != null && (!breq.getSospensione().isEmpty())) {
-
-			TipoSospensione tS = repSos.findByTipoSospensione(breq.getSospensione()).orElseThrow(() ->
+			String s = breq.getSospensione().trim().toUpperCase();
+			TipoSospensione tS = repSos.findByTipoSospensione(s).orElseThrow(() ->
 							new VeicoloException(msgS.get("null_sos")));
 			b.setSospensione(tS);
 		} else {
@@ -154,25 +144,19 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 		}
 		
 		if ((breq.getFreno()) != null && (!breq.getFreno().isEmpty())) {
-			TipoFreno tF = repFre.findByTipoFreno(breq.getFreno()).orElseThrow(() ->
+			String f = breq.getFreno().trim().toUpperCase();
+			TipoFreno tF = repFre.findByTipoFreno(f).orElseThrow(() ->
 							new VeicoloException(msgS.get("null_fre")));
 			b.setFreno(tF);
 		}
 		
 		if ((breq.getSospensione()) != null && (!breq.getSospensione().isEmpty())) {
-
-			TipoSospensione tS = repSos.findByTipoSospensione(breq.getSospensione()).orElseThrow(() ->
+			String s = breq.getSospensione().trim().toUpperCase();
+			TipoSospensione tS = repSos.findByTipoSospensione(s).orElseThrow(() ->
 							new VeicoloException(msgS.get("null_sos")));
 			b.setSospensione(tS);
 		}
-		
-		if ((breq.getSospensione()) != null && (!breq.getSospensione().isEmpty())) {
-
-			TipoSospensione tS = repSos.findByTipoSospensione(breq.getSospensione()).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_sos")));
-			b.setSospensione(tS);
-		} 
-		
+				
 		if ((breq.getPieghevole()) != null) {
 			b.setPieghevole(breq.getPieghevole());
 		} 

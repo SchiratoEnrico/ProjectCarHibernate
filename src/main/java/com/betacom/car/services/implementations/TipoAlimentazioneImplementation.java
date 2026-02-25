@@ -31,13 +31,12 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 		
 		if(req.getTipoAlimentazione() == null || req.getTipoAlimentazione().isBlank())
 			throw new VeicoloException(msgS.get("null_tipAl"));
-		
-		if(repTA.findByTipoAlimentazione(req.getTipoAlimentazione()).isPresent())
+		String a = req.getTipoAlimentazione().trim().toUpperCase();
+		if(repTA.findByTipoAlimentazione(a).isPresent())
 			throw new VeicoloException(msgS.get("exists_tipAl"));
 		
 		TipoAlimentazione tA = new TipoAlimentazione();
-		tA.setTipoAlimentazione(req.getTipoAlimentazione().toUpperCase());
-	
+		tA.setTipoAlimentazione(a);
 		repTA.save(tA);
 	}
 
@@ -74,10 +73,9 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 				tA.setTipoAlimentazione(myT);
 				repTA.save(tA);			}
 			else {
-				throw new VeicoloException("dup_vei");
+				throw new VeicoloException("dup_tA");
 			}
 		}
-		
 	}
 
 }

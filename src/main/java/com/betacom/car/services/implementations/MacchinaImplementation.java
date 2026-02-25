@@ -39,11 +39,11 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("create {}", req);
 
         Macchina m = new Macchina();
-        checkReqMacc(req, m);
-        // controllo targa duplicata
-        if (repM.findByTarga(req.getTarga()).isPresent())
-            throw new VeicoloException(msgS.get("targa_exists"));
-
+        m = checkReqMacc(req, m);
+        // controllo se targa presente
+        if (repM.findByTarga(m.getTarga()).isPresent()) {
+        	throw new VeicoloException(msgS.get("targa_exists"));
+        	}
         int id = repM.save(m).getId();
         log.debug("macchina creata con id: {}", id);
         return id;
@@ -67,10 +67,8 @@ public class MacchinaImplementation implements IMacchinaServices{
 
         Macchina m = repM.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
-        log.debug("trovato");
         
         m = optReqMacc(req, m);
-        
         log.debug("");
         repM.save(m);
 		
@@ -84,7 +82,6 @@ public class MacchinaImplementation implements IMacchinaServices{
                 .stream()
                 .map(Utils::buildMacchinaDTO)
                 .toList();
-        
 	}
 
 	@Override
@@ -127,7 +124,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 	            throw new VeicoloException(msgS.get("null_porte"));
 
 	        if (req.getTarga() != null && !req.getTarga().isBlank())
-	            m.setTarga(req.getTarga().toUpperCase());
+	            m.setTarga(req.getTarga().trim().toUpperCase());
 	        else
 	            throw new VeicoloException(msgS.get("null_targa"));
 
@@ -149,10 +146,8 @@ public class MacchinaImplementation implements IMacchinaServices{
 
 
 	        if (req.getTarga() != null && !req.getTarga().isBlank())
-	            m.setTarga(req.getTarga().toUpperCase());
+	            m.setTarga(req.getTarga().trim().toUpperCase());
 	        
-	        log.debug("dopo opt req {}", m);
-
 	        return m;
 	    }
 }

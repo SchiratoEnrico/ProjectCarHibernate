@@ -64,7 +64,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 			String myT = req.getTipoVeicolo().trim().toUpperCase();
 			Optional<TipoVeicolo> t2 = repT.findByTipoVeicolo(myT);
 			if (t2.isEmpty()) {
-				t.setTipoVeicolo(req.getTipoVeicolo());
+				t.setTipoVeicolo(myT);
 				repT.save(t);			
 			} else {
 				throw new VeicoloException("dup_vei");

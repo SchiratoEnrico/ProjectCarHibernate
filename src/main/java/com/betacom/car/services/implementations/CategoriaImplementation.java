@@ -32,11 +32,12 @@ public class CategoriaImplementation implements ICategoriaServices{
         if (req.getCategoria() == null || req.getCategoria().isBlank())
             throw new VeicoloException(msgS.get("null_cat"));
 
-        if (repC.findByCategoria(req.getCategoria()).isPresent())
+        String cat = req.getCategoria().trim().toUpperCase();
+        if (repC.findByCategoria(cat).isPresent())
             throw new VeicoloException(msgS.get("exists_cat"));
 
         Categoria c = new Categoria();
-        c.setCategoria(req.getCategoria().toUpperCase());
+        c.setCategoria(cat);
 
         repC.save(c);
     }
