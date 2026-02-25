@@ -11,7 +11,6 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ToString
 public class BiciclettaDTO extends VeicoloDTO {
 	private Integer numeroMarce;

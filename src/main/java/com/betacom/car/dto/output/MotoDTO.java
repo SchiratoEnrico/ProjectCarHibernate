@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 @ToString
 public class MotoDTO extends VeicoloDTO {
 	private Integer cc;

@@ -3,6 +3,7 @@ package com.betacom.car.dto.output;
 import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +13,9 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @ToString
-public abstract class VeicoloDTO {
+public class VeicoloDTO {
 	private Integer idVeicolo;
 	private TipoVeicoloDTO tipoVeicolo;
 	private Integer numeroRuote;

@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 @ToString
 public class MacchinaDTO extends VeicoloDTO {
 	private Integer numeroPorte;
