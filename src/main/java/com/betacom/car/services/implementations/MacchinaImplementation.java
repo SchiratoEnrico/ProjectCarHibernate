@@ -79,7 +79,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 
         return repM.findAll()
                 .stream()
-                .map(this::buildMacchinaDTO)
+                .map(Utils::buildMacchinaDTO)
                 .toList();
         
 	}
@@ -91,7 +91,7 @@ public class MacchinaImplementation implements IMacchinaServices{
         Macchina m = repM.findById(id)
                 .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
 
-        return buildMacchinaDTO(m);
+        return Utils.buildMacchinaDTO(m);
 	}
 
 	@Override
@@ -102,48 +102,10 @@ public class MacchinaImplementation implements IMacchinaServices{
 
 	    return repM.findAll(spec)
                 .stream()
-                .map(this::buildMacchinaDTO)
+                .map(Utils::buildMacchinaDTO)
                 .toList();
 	}
 	
-	 private MacchinaDTO buildMacchinaDTO(Macchina m) {
-	        MacchinaDTO dto = new MacchinaDTO();
-
-	        dto.setIdVeicolo(m.getId());
-	        dto.setNumeroRuote(m.getNumeroRuote());
-	        dto.setAnnoProduzione(Utils.fromYear(m.getAnnoProduzione()));
-	        dto.setModello(m.getModello());
-	        dto.setCc(m.getCc());
-	        dto.setNumeroPorte(m.getNumeroPorte());
-	        dto.setTarga(m.getTarga());
-
-	        dto.setColore(ColoreDTO.builder()
-	                .id(m.getColore().getId())
-	                .colore(m.getColore().getColore())
-	                .build());
-
-	        dto.setMarca(MarcaDTO.builder()
-	                .id(m.getMarca().getId())
-	                .marca(m.getMarca().getMarca())
-	                .build());
-
-	        dto.setTipoAlimentazione(TipoAlimentazioneDTO.builder()
-	                .id(m.getTipoAlimentazione().getId())
-	                .tipoAlimentazione(m.getTipoAlimentazione().getTipoAlimentazione())
-	                .build());
-
-	        dto.setCategoria(CategoriaDTO.builder()
-	                .id(m.getCategoria().getId())
-	                .categoria(m.getCategoria().getCategoria())
-	                .build());
-
-	        dto.setTipoVeicolo(TipoVeicoloDTO.builder()
-	                .id(m.getTipoVeicolo().getId())
-	                .tipoVeicolo(m.getTipoVeicolo().getTipoVeicolo())
-	                .build());
-
-	        return dto;
-	    }
 	
 
 	 public Macchina checkReqMacc(MacchinaRequest req, Macchina m) throws VeicoloException {

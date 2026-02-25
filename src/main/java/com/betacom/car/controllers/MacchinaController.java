@@ -28,9 +28,6 @@ public class MacchinaController {
 	
 	private final IMacchinaServices macchinaS;
 	private final IMessagesServices msgS;
-	
-
-
 
 	@PostMapping("/create")
     public ResponseEntity<Resp> create(@RequestBody(required = true) MacchinaRequest req) {
@@ -77,6 +74,7 @@ public class MacchinaController {
         }
         return ResponseEntity.status(status).body(r);
     }
+	
 	@GetMapping ("/list")
 	private ResponseEntity<Object> list(){
 		Object r = new Object();

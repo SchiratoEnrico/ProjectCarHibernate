@@ -1,6 +1,7 @@
 package com.betacom.car.services.implementations;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -8,9 +9,11 @@ import com.betacom.car.dto.input.CategoriaRequest;
 import com.betacom.car.dto.output.CategoriaDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Categoria;
+import com.betacom.car.models.Marca;
 import com.betacom.car.repositories.ICategoriaRepository;
 import com.betacom.car.services.interfaces.ICategoriaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
+import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -57,11 +60,27 @@ public class CategoriaImplementation implements ICategoriaServices{
 
 	        return repC.findAll()
 	                .stream()
-	                .map(c -> CategoriaDTO.builder()
-	                        .id(c.getId())
-	                        .categoria(c.getCategoria())
-	                        .build())
+	                .map(Utils::buildCategoriaDTO)
 	                .toList();
+	}
+
+
+	@Override
+	public void update(CategoriaRequest req) throws VeicoloException {
+		log.debug("update Categoria {}", req);
+		Categoria c = repC.findById(req.getId())
+				.orElseThrow(() -> new VeicoloException(msgS.get("null_cat")));
+
+		if ((req.getCategoria() != null) && (!req.getCategoria().isBlank())) {
+			String myT = req.getCategoria().trim().toUpperCase();
+			Optional<Categoria> t = repC.findByCategoria(myT);
+			if (t.isEmpty()) {
+				c.setCategoria(req.getCategoria());
+				repC.save(c);			}
+			else {
+				throw new VeicoloException("dup_vei");
+			}
+		}
 	}
 
 }

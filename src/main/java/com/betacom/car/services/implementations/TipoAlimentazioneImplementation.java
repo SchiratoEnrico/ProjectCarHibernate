@@ -1,6 +1,7 @@
 package com.betacom.car.services.implementations;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import com.betacom.car.models.TipoAlimentazione;
 import com.betacom.car.repositories.ITipoAlimentazioneRepository;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.ITipoAlimentazioneServices;
+import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -55,11 +57,27 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 
         return repTA.findAll()
                 .stream()
-                .map(a -> TipoAlimentazioneDTO.builder()
-                        .id(a.getId())
-                        .tipoAlimentazione(a.getTipoAlimentazione())
-                        .build())
+                .map(Utils::buildTipoAlimentazioneDTO)
                 .toList();
+	}
+
+	@Override
+	public void update(TipoAlimentazioneRequest req) throws VeicoloException {
+		log.debug("update Categoria {}", req);
+		TipoAlimentazione tA = repTA.findById(req.getId())
+				.orElseThrow(() -> new VeicoloException(msgS.get("null_tA")));
+
+		if ((req.getTipoAlimentazione() != null) && (!req.getTipoAlimentazione().isBlank())) {
+			String myT = req.getTipoAlimentazione().trim().toUpperCase();
+			Optional<TipoAlimentazione> t = repTA.findByTipoAlimentazione(myT);
+			if (t.isEmpty()) {
+				tA.setTipoAlimentazione(req.getTipoAlimentazione());
+				repTA.save(tA);			}
+			else {
+				throw new VeicoloException("dup_vei");
+			}
+		}
+		
 	}
 
 }

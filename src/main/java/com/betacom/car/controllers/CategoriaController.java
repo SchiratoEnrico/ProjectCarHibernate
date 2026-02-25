@@ -6,11 +6,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.car.dto.input.CategoriaRequest;
+import com.betacom.car.dto.input.TipoAlimentazioneRequest;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.ICategoriaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -63,6 +65,21 @@ public class CategoriaController {
         try {
             categoriaS.delete(id);
             r.setMsg(msgS.get("rest_delited"));
+        } catch (Exception e) {
+            r.setMsg(e.getMessage());
+            status = HttpStatus.BAD_REQUEST;
+        }
+        return ResponseEntity.status(status).body(r);
+    }
+    
+    @PutMapping("/update")
+    public ResponseEntity<Resp> update(@RequestBody(required = true) CategoriaRequest req) {
+        Resp r = new Resp();
+        HttpStatus status = HttpStatus.OK;
+
+        try {
+        	categoriaS.update(req);
+            r.setMsg(msgS.get("rest_updated"));
         } catch (Exception e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;

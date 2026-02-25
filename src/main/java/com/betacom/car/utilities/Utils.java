@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.betacom.car.dto.input.MacchinaRequest;
 import com.betacom.car.dto.input.VeicoloRequest;
 import com.betacom.car.dto.output.BiciclettaDTO;
 import com.betacom.car.dto.output.CategoriaDTO;
 import com.betacom.car.dto.output.ColoreDTO;
+import com.betacom.car.dto.output.MacchinaDTO;
 import com.betacom.car.dto.output.MarcaDTO;
 import com.betacom.car.dto.output.TipoAlimentazioneDTO;
 import com.betacom.car.dto.output.TipoFrenoDTO;
@@ -21,6 +23,7 @@ import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Bicicletta;
 import com.betacom.car.models.Categoria;
 import com.betacom.car.models.Colore;
+import com.betacom.car.models.Macchina;
 import com.betacom.car.models.Marca;
 import com.betacom.car.models.TipoAlimentazione;
 import com.betacom.car.models.TipoFreno;
@@ -222,4 +225,15 @@ public class Utils {
 		
 		return bDto;
 	}
+	
+	public static MacchinaDTO buildMacchinaDTO(Macchina m) {
+	    MacchinaDTO dto = (MacchinaDTO) buildVeicoloDTO(m);
+
+	    dto.setCc(m.getCc());
+	    dto.setNumeroPorte(m.getNumeroPorte());
+	    dto.setTarga(m.getTarga());
+
+	    return dto;
+	}
+
 }
