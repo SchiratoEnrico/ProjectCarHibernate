@@ -1,11 +1,17 @@
 package com.betacom.car.dto.input;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-public abstract class VeicoloFilterRequest {
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
+public class VeicoloFilterRequest {
 	
 	 	private Integer numeroRuote;
 	    private Integer anno;
