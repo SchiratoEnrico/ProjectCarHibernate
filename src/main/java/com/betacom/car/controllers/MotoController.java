@@ -31,7 +31,8 @@ public class MotoController {
 	private final FilterTranslator filtT;
 	private final IMotoServices motS;
 	private final IMessagesServices msgS;
-	
+	private final String tipoVeicolo = "MOTO";
+
 	@PostMapping("/create")
 	public ResponseEntity<Resp> create(@RequestBody(required=true) MotoRequest req){
 		Resp r = new Resp();
@@ -114,8 +115,7 @@ public class MotoController {
 			@RequestParam(required=false) String tipoA,
 			@RequestParam(required=false) String cat,
 			@RequestParam(required=false) Integer annoProduzione,
-			@RequestParam(required=false) String modello,
-			@RequestParam(required=false) String tipoVei
+			@RequestParam(required=false) String modello
 			){
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
@@ -130,7 +130,7 @@ public class MotoController {
 					.tipoAlimentazione(Utils.formatStringParam(tipoA))
 					.categoria(Utils.formatStringParam(cat))
 					.anno(annoProduzione)
-					.tipoVeicolo(Utils.formatStringParam(tipoVei))
+					.tipoVeicolo(Utils.formatStringParam(tipoVeicolo))
 					.modello(Utils.formatStringParam(modello))
 					.numeroRuote(numeroRuote)
 	        		.build());

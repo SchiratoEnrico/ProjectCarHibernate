@@ -30,6 +30,8 @@ public class BiciclettaController {
 	private final IBiciclettaServices biciS;
 	private final IMessagesServices msgS;
 	private final FilterTranslator filT;
+	private final String tipoVeicolo = "BICI";
+	
 	
 	@PostMapping("/create")
     public ResponseEntity<Resp> create(@RequestBody(required = true) BiciRequest req) {
@@ -109,7 +111,6 @@ public class BiciclettaController {
 	        @RequestParam(required = false) String categoria,
 	        @RequestParam(required = false) String modello,
 	        @RequestParam(required = false) String tipoAlimentazione,
-	        @RequestParam(required = false) String tipoVeicolo,
 	        @RequestParam(required = false) String freno,
 	        @RequestParam(required = false) String sospensione,
 	        @RequestParam(required = false) Integer numeroMarce,

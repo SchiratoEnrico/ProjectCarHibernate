@@ -32,6 +32,7 @@ public class MacchinaController {
 	private final IMacchinaServices macchinaS;
 	private final IMessagesServices msgS;
 	private final FilterTranslator filtT;
+	private final String tipoVeicolo = "MACCHINA";
 
 	@PostMapping("/create")
     public ResponseEntity<Resp> create(@RequestBody(required = true) MacchinaRequest req) {
@@ -116,7 +117,6 @@ public class MacchinaController {
 	        @RequestParam(required = false) String colore,
 	        @RequestParam(required = false) String categoria,
 	        @RequestParam(required = false) String tipoAlimentazione,
-	        @RequestParam(required = false) String tipoVeicolo,
 	        // campi specifici di MacchinaFilter
 	        @RequestParam(required = false) String targa,
 	        @RequestParam(required = false) Integer numeroPorte,
