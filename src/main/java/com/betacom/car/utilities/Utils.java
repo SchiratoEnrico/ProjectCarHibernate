@@ -55,8 +55,6 @@ public class Utils {
 	private final ITipoVeicoloRepository repVei;
 	private final ICategoriaRepository repCat;
 
-
-
 	public Veicolo checkReq(VeicoloRequest req, Veicolo v) throws VeicoloException {
 		
 		if (req.getColore() != null && (!req.getColore().isBlank())) {
@@ -317,4 +315,11 @@ public class Utils {
 	    return dto;
 	}
 
+	public static String formatStringParam(String param) {
+		String myP = null;
+		if ((param != null) &&  (!param.isBlank())) {
+			myP = param.trim().toUpperCase();
+		}
+		return myP;
+	}
 }

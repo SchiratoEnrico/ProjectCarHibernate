@@ -19,6 +19,7 @@ import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.FilterTranslator;
+import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -129,12 +130,12 @@ public class MacchinaController {
 	        		.id(id)
 	    			.numeroRuote(numeroRuote)
 	        		.anno(anno)
-	        		.marca(marca.trim().toUpperCase())
-	        		.colore(colore.trim().toUpperCase())
-	        		.categoria(categoria.trim().toUpperCase())
-	        		.tipoAlimentazione(tipoAlimentazione.trim().toUpperCase())
-	        		.tipoVeicolo(tipoVeicolo.trim().toUpperCase())
-	        		.targa(targa.trim().toUpperCase())
+	        		.marca(Utils.formatStringParam(marca))
+	        		.colore(Utils.formatStringParam(colore))
+	        		.categoria(Utils.formatStringParam(categoria))
+	        		.tipoAlimentazione(Utils.formatStringParam(tipoAlimentazione))
+	        		.tipoVeicolo(Utils.formatStringParam(tipoVeicolo))
+	        		.targa(Utils.formatStringParam(targa))
 	        		.numeroPorte(numeroPorte)
 	        		.cc(cc)
 	        		.build());

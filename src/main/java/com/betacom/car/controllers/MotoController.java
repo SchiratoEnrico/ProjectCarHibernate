@@ -20,7 +20,7 @@ import com.betacom.car.dto.input.MotoRequest;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.utilities.FilterTranslator;
-
+import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -125,14 +125,14 @@ public class MotoController {
 					.id(id)
 					.cc(cc)
 					.numeroMarce(numeroMarce)
-					.targa(targa.trim().toUpperCase())
-					.colore(colore.trim().toUpperCase())
-					.marca(marca.trim().toUpperCase())
-					.tipoAlimentazione(tipoA.trim().toUpperCase())
-					.categoria(cat.trim().toUpperCase())
+					.targa(Utils.formatStringParam(targa))
+					.colore(Utils.formatStringParam(colore))
+					.marca(Utils.formatStringParam(marca))
+					.tipoAlimentazione(Utils.formatStringParam(tipoA))
+					.categoria(Utils.formatStringParam(cat))
 					.anno(annoProduzione)
-					.tipoVeicolo(tipoVei.trim().toUpperCase())
-					.modello(modello.trim().toUpperCase())
+					.tipoVeicolo(Utils.formatStringParam(tipoVei))
+					.modello(Utils.formatStringParam(modello))
 					.numeroRuote(numeroRuote)
 	        		.build());
 	   

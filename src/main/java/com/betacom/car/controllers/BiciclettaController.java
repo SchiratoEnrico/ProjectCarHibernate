@@ -22,6 +22,7 @@ import com.betacom.car.services.interfaces.IBiciclettaServices;
 import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.FilterTranslator;
+import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -122,16 +123,16 @@ public class BiciclettaController {
 	        BiciFilterRequest filter = BiciFilterRequest.builder()
 	        							.numeroRuote(numeroRuote)
 	        							.anno(anno)
-	        							.colore(colore.trim().toUpperCase())
-	        							.categoria(categoria.trim().toUpperCase())
-	        							.marca(marca.trim().toUpperCase())
-	        							.tipoAlimentazione(tipoAlimentazione.trim().toUpperCase())
-	        							.tipoVeicolo(tipoVeicolo.trim().toUpperCase())
-	        							.freno(freno.trim().toUpperCase())
+	        							.colore(Utils.formatStringParam(colore))
+	        							.categoria(Utils.formatStringParam(categoria))
+	        							.marca(Utils.formatStringParam(marca))
+	        							.tipoAlimentazione(Utils.formatStringParam(tipoAlimentazione))
+	        							.tipoVeicolo(Utils.formatStringParam(tipoVeicolo))
+	        							.freno(Utils.formatStringParam(freno))
 	        							.numeroMarce(numeroMarce)
 	        							.pieghevole(pieghevole)
-	        							.sospensione(sospensione.trim().toUpperCase())
-	        							.modello(modello.trim().toUpperCase())
+	        							.sospensione(Utils.formatStringParam(sospensione))
+	        							.modello(Utils.formatStringParam(modello))
 	        							.build();
 
 	        r = biciS.filter(filT.toBiciFilter(filter));
