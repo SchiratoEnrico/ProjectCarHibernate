@@ -30,10 +30,10 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 		log.debug("create {}", req);
 		
 		if(req.getTipoAlimentazione() == null || req.getTipoAlimentazione().isBlank())
-			throw new VeicoloException(msgS.get("null_tipAl"));
+			throw new VeicoloException(msgS.get("null_ali"));
 		String a = req.getTipoAlimentazione().trim().toUpperCase();
 		if(repTA.findByTipoAlimentazione(a).isPresent())
-			throw new VeicoloException(msgS.get("exists_tipAl"));
+			throw new VeicoloException(msgS.get("exists_ali"));
 		
 		TipoAlimentazione tA = new TipoAlimentazione();
 		tA.setTipoAlimentazione(a);
@@ -45,7 +45,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 		log.debug("delete tipo alimentazione con id: {}", id);
 
 		TipoAlimentazione tA = repTA.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_cat")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_ali")));
 
         repTA.delete(tA);
 	}
@@ -64,7 +64,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 	public void update(TipoAlimentazioneRequest req) throws VeicoloException {
 		log.debug("update Categoria {}", req);
 		TipoAlimentazione tA = repTA.findById(req.getId())
-				.orElseThrow(() -> new VeicoloException(msgS.get("null_tA")));
+				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_ali")));
 
 		if ((req.getTipoAlimentazione() != null) && (!req.getTipoAlimentazione().isBlank())) {
 			String myT = req.getTipoAlimentazione().trim().toUpperCase();
@@ -73,7 +73,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 				tA.setTipoAlimentazione(myT);
 				repTA.save(tA);			}
 			else {
-				throw new VeicoloException("dup_tA");
+				throw new VeicoloException("exists_ali");
 			}
 		}
 	}

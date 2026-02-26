@@ -153,43 +153,43 @@ public  class FilterTranslator {
 	
 	 private Integer findMarcaId(String v) {
 	        return marcaR.findByMarca(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_marca")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mar")))
 	                .getId(); 
 	    }
 	 
 	 private Integer findTipoVeicoloId(String v) {
 	        return veicR.findByTipoVeicolo(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_tipo")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_vei")))
 	                .getId(); 
 	    }
 
 	    private Integer findColoreId(String v) {
 	        return colR.findByColore(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_colore")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")))
 	                .getId();
 	    }
 
 	    private Integer findCategoriaId(String v) {
 	        return catR.findByCategoria(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_cat")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mar")))
 	                .getId();
 	    }
 
 	    private Integer findTipoAlimId(String v) {
 	        return alimR.findByTipoAlimentazione(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_alim")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_ali")))
 	                .getId();
 	    }
 
 	    private Integer findFrenoId(String v) {
 	        return frenoR.findByTipoFreno(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_freno")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_fre")))
 	                .getId();
 	    }
 
 	    private Integer findSospId(String v) {
 	        return sospR.findByTipoSospensione(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("null_sosp")))
+	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_sos")))
 	                .getId();
 	    }
 }

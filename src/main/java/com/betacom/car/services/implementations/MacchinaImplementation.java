@@ -42,7 +42,7 @@ public class MacchinaImplementation implements IMacchinaServices{
         m = checkReqMacc(req, m);
         // controllo se targa presente
         if (repM.findByTarga(m.getTarga()).isPresent()) {
-        	throw new VeicoloException(msgS.get("targa_exists"));
+        	throw new VeicoloException(msgS.get("exists_tar"));
         	}
         int id = repM.save(m).getId();
         log.debug("macchina creata con id: {}", id);
@@ -55,7 +55,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("delete macchina con id: {}", id);
 
         Macchina m = repM.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
 
         repM.delete(m);
 		
@@ -66,7 +66,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("update {}", req);
 
         Macchina m = repM.findById(req.getId())
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
         
         m = optReqMacc(req, m);
         log.debug("");
@@ -89,7 +89,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("findById: {}", id);
 
         Macchina m = repM.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_mac")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
 
         return Utils.buildMacchinaDTO(m);
 	}
@@ -116,17 +116,17 @@ public class MacchinaImplementation implements IMacchinaServices{
 	        if (req.getCc() != null)
 	            m.setCc(req.getCc());
 	        else
-	            throw new VeicoloException(msgS.get("null_cc"));
+	            throw new VeicoloException(msgS.get("null_ccc"));
 
 	        if (req.getNumeroPorte() != null)
 	            m.setNumeroPorte(req.getNumeroPorte());
 	        else
-	            throw new VeicoloException(msgS.get("null_porte"));
+	            throw new VeicoloException(msgS.get("null_por"));
 
 	        if (req.getTarga() != null && !req.getTarga().isBlank())
 	            m.setTarga(req.getTarga().trim().toUpperCase());
 	        else
-	            throw new VeicoloException(msgS.get("null_targa"));
+	            throw new VeicoloException(msgS.get("null_tar"));
 
 	        return m;
 	    }

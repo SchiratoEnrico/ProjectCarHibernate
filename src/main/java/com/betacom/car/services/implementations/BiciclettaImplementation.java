@@ -40,9 +40,9 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	@Transactional (rollbackFor = Exception.class)
 	public Integer create(BiciRequest req) throws VeicoloException {
 		log.debug("creating Bicicletta {}", req);
-		log.debug("prima check req");
+
 		Bicicletta b = checkReq(req);
-		log.debug("dopo check req");
+
 		Integer id = repB.save(b).getId();
 		return id;
 	}
@@ -53,7 +53,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 		log.debug("removing Bicicletta with ID {}", id);
 
 		Bicicletta b = repB.findById(id).orElseThrow(() ->
-			new VeicoloException(msgS.get("null_bid")));
+			new VeicoloException(msgS.get("!exists_bic")));
 		repB.delete(b);
 	}
 
@@ -79,7 +79,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	public BiciclettaDTO findById(Integer id) throws VeicoloException {
 		log.debug("find Bicicletta with ID {}", id);
 		Bicicletta b = repB.findById(id).orElseThrow(() ->
-							new VeicoloException("null_bid"));
+							new VeicoloException("!exists_bic"));
 		return Utils.buildBiciclettaDTO(b);
 	}
 
@@ -104,7 +104,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 		if (breq.getNumeroMarce() != null) {
 			b.setNumeroMarce(breq.getNumeroMarce());
 		} else {
-			throw new VeicoloException(msgS.get("null_nummar"));
+			throw new VeicoloException(msgS.get("null_nmar"));
 		}
 		
 		if ((breq.getFreno()) != null && (!breq.getFreno().isEmpty())) {

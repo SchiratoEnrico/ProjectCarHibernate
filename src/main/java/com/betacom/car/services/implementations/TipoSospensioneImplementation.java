@@ -36,7 +36,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 				t.setTipoSospensione(myT);
 				repT.save(t);
 			} else {
-				throw new VeicoloException("dup_sos");
+				throw new VeicoloException("exists_sos");
 			}
 		} else {
 			throw new VeicoloException("null_sos");
@@ -47,7 +47,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete TipoSospensione with ID {}", id);
 		TipoSospensione t = repT.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_sid")));
+							new VeicoloException(msgS.get("!exists_sos")));
 		repT.delete(t);
 	}
 
@@ -55,7 +55,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	public void update(TipoSospensioneRequest req) throws VeicoloException {
 		log.debug("modifying TipoSospensione {}", req);
 		TipoSospensione t = repT.findById(req.getId()).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_sid")));
+							new VeicoloException(msgS.get("!exists_sos")));
 		
 		if ((req.getTipoSospensione() != null) && (!req.getTipoSospensione().isBlank())) {
 			String myT = req.getTipoSospensione().trim().toUpperCase();
@@ -64,7 +64,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 				t.setTipoSospensione(myT);
 				repT.save(t);			} 
 			else {
-				throw new VeicoloException("dup_sos");
+				throw new VeicoloException("exists_sos");
 			}
 		}
 	}

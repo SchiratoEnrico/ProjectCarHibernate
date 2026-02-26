@@ -62,7 +62,7 @@ public class Utils {
 		if (req.getColore() != null && (!req.getColore().isBlank())) {
 			String c = req.getColore().trim().toUpperCase();
 			Colore col = repCol.findByColore(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_col")));
+								new VeicoloException(msgS.get("!exists_col")));
 			v.setColore(col);
 		} else {
 			throw new VeicoloException(msgS.get("null_col"));
@@ -71,16 +71,16 @@ public class Utils {
 		if (req.getMarca() != null && (!req.getMarca().isBlank())) {
 			String m = req.getMarca().trim().toUpperCase();
 			Marca mar = repMar.findByMarca(m).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_mar")));
+								new VeicoloException(msgS.get("!exists_mar")));
 			v.setMarca(mar);
 		} else {
-			throw new VeicoloException(msgS.get("null_col"));
+			throw new VeicoloException(msgS.get("null_mar"));
 		}
 
 		if (req.getAlimentazione() != null && (!req.getAlimentazione().isBlank())) {
 			String t = req.getAlimentazione().trim().toUpperCase();
 			TipoAlimentazione tA = repAli.findByTipoAlimentazione(t).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_mar")));
+								new VeicoloException(msgS.get("!exists_mar")));
 			v.setTipoAlimentazione(tA);
 		} else {
 			throw new VeicoloException(msgS.get("null_ali"));
@@ -89,16 +89,16 @@ public class Utils {
 		if (req.getCategoria() != null && (!req.getCategoria().isBlank())) {
 			String c = req.getCategoria().trim().toUpperCase();
 			Categoria cat = repCat.findByCategoria(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_mar")));
+								new VeicoloException(msgS.get("!exists_mar")));
 			v.setCategoria(cat);
 		} else {
-			throw new VeicoloException(msgS.get("null_mar"));
+			throw new VeicoloException(msgS.get("null_cat"));
 		}
 		
 		if (req.getTipoVeicolo() != null && (!req.getTipoVeicolo().isBlank())) {
 			String c = req.getTipoVeicolo().trim().toUpperCase();
 			TipoVeicolo tV = repVei.findByTipoVeicolo(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_vei")));
+								new VeicoloException(msgS.get("!exists_vei")));
 			v.setTipoVeicolo(tV);
 		} else {
 			throw new VeicoloException(msgS.get("null_vei"));
@@ -107,7 +107,7 @@ public class Utils {
 		if (req.getAnnoProduzione() != null) {
 			v.setAnnoProduzione(req.getAnnoProduzione());
 		} else {
-			throw new VeicoloException(msgS.get("null_date"));
+			throw new VeicoloException(msgS.get("null_ann"));
 		}
 		
 		if (req.getNumeroRuote() != null ) {

@@ -48,7 +48,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 		log.debug("delete categoria con id: {}", id);
 
         Categoria c = repC.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_cat")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("null_cat_id")));
 
         repC.delete(c);
 		
@@ -69,7 +69,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 	public void update(CategoriaRequest req) throws VeicoloException {
 		log.debug("update Categoria {}", req);
 		Categoria c = repC.findById(req.getId())
-				.orElseThrow(() -> new VeicoloException(msgS.get("null_cat")));
+				.orElseThrow(() -> new VeicoloException(msgS.get("null_cat_id")));
 
 		if ((req.getCategoria() != null) && (!req.getCategoria().isBlank())) {
 			String myT = req.getCategoria().trim().toUpperCase();
@@ -78,7 +78,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 				c.setCategoria(myT);
 				repC.save(c);			}
 			else {
-				throw new VeicoloException("dup_vei");
+				throw new VeicoloException("null_cat");
 			}
 		}
 	}

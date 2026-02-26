@@ -29,10 +29,10 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 		log.debug("create {}", req);
 		
 		if(req.getTipoFreno() == null || req.getTipoFreno().isBlank())
-			throw new VeicoloException(msgS.get("null_tF"));
+			throw new VeicoloException(msgS.get("null_fre"));
 		String t = req.getTipoFreno();
 		if(repTA.findByTipoFreno(t).isPresent())
-			throw new VeicoloException(msgS.get("exists_tF"));
+			throw new VeicoloException(msgS.get("exists_fre"));
 		
 		TipoFreno tA = new TipoFreno();
 		tA.setTipoFreno(t);
@@ -44,7 +44,7 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 		log.debug("delete tipo Freno con id: {}", id);
 
 		TipoFreno tA = repTA.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_fid")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_fre")));
 
         repTA.delete(tA);
 	}
@@ -65,7 +65,7 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 	@Override
 	public void update(TipoFrenoRequest req) throws VeicoloException {
 		TipoFreno t = repTA.findById(req.getId())
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_fid")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_fre")));
 		if ((req.getTipoFreno()) != null && (!req.getTipoFreno().isEmpty())) {
 			String myT = req.getTipoFreno().trim().toUpperCase();
 			Optional<TipoFreno> t2 = repTA.findByTipoFreno(myT);
@@ -73,10 +73,10 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 				t.setTipoFreno(myT);
 				repTA.save(t);
 			} else {
-				throw new VeicoloException(msgS.get("dup_tF"));
+				throw new VeicoloException(msgS.get("exists_fre"));
 			}
 		} else {
-			throw new VeicoloException(msgS.get("null_tF"));
+			throw new VeicoloException(msgS.get("null_fre"));
 		}
 	}
 }

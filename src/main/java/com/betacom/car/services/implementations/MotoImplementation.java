@@ -39,7 +39,7 @@ public class MotoImplementation implements IMotoServices{
 		mot = checkReqMoto(req, mot);
 		log.debug("dopo check req");
 		if (repM.findByTarga(mot.getTarga()).isPresent())
-            throw new VeicoloException(msgS.get("targa_exists"));
+            throw new VeicoloException(msgS.get("exists_tar"));
 		
 		int id = repM.save(mot).getId();
 		return id;
@@ -50,7 +50,7 @@ public class MotoImplementation implements IMotoServices{
 		log.debug("delete {}", id);
 		
 		Moto mot = repM.findById(id)
-				.orElseThrow(() -> new VeicoloException("Moto non trovata in DB: "+id));
+				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_mot")));
 		
 		repM.delete(mot);
 	}
@@ -59,7 +59,7 @@ public class MotoImplementation implements IMotoServices{
 	public void update(MotoRequest req) throws VeicoloException {
 		log.debug("create {}", req);
 
-		Moto mot = repM.findById(req.getId()).orElseThrow(()-> new VeicoloException(msgS.get("null_mot")));
+		Moto mot = repM.findById(req.getId()).orElseThrow(()-> new VeicoloException(msgS.get("!exists_mot")));
 		
 		mot = optReqMoto(req, mot);
 		
@@ -81,7 +81,7 @@ public class MotoImplementation implements IMotoServices{
 	public MotoDTO findById(Integer id) throws VeicoloException {
 		log.debug("findById: {}", id);
 		Moto m = repM.findById(id)
-				.orElseThrow(() -> new VeicoloException("Moto non trovata: "+id));
+				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_mot")));
 		
 		return Utils.buildMotoDTO(m);
 	}
@@ -107,7 +107,7 @@ public class MotoImplementation implements IMotoServices{
         if (req.getCc() != null)
             m.setCc(req.getCc());
         else
-            throw new VeicoloException(msgS.get("null_cc"));
+            throw new VeicoloException(msgS.get("null_ccc"));
 
         if (req.getNumeroMarce() != null)
             m.setNumeroMarce(req.getNumeroMarce());
@@ -138,8 +138,6 @@ public class MotoImplementation implements IMotoServices{
 
         if (req.getTarga() != null && !req.getTarga().isBlank())
             m.setTarga(req.getTarga().trim().toUpperCase());
-        
-        //log.debug("dopo opt req {}", m);
 
         return m;
     }

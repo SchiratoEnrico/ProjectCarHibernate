@@ -39,7 +39,7 @@ public class MarcaImplementation implements IMarcaServices{
 			t.setMarca(myT);
 			repM.save(t);
 		} else {
-			throw new VeicoloException("dup_mar");
+			throw new VeicoloException("exists_mar");
 		}
 	}
 
@@ -48,7 +48,7 @@ public class MarcaImplementation implements IMarcaServices{
 		log.debug("removing Marca with ID {}", id);
 
 		Marca t = repM.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_mid")));
+							new VeicoloException(msgS.get("!exists_mar")));
 		repM.delete(t);		
 	}
 
@@ -56,7 +56,7 @@ public class MarcaImplementation implements IMarcaServices{
 	public void update(MarcaRequest req) throws VeicoloException {
 		log.debug("modifying Marca {}", req);
 		Marca t = repM.findById(req.getId()).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_mid")));
+								new VeicoloException(msgS.get("!exists_mar")));
 
 		
 		if ((req.getMarca() != null) && (!req.getMarca().isBlank())) {
@@ -66,7 +66,7 @@ public class MarcaImplementation implements IMarcaServices{
 				t.setMarca(myT);
 				repM.save(t);			}
 			else {
-				throw new VeicoloException("dup_vei");
+				throw new VeicoloException("exists_mar");
 			}
 		}
 	}

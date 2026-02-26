@@ -40,7 +40,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 			t.setTipoVeicolo(myT);
 			repT.save(t);
 		} else {
-			throw new VeicoloException("dup_vei");
+			throw new VeicoloException("exists_vei");
 		}
 	}
 
@@ -49,7 +49,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 		log.debug("removing TipoVeicolo with ID {}", id);
 
 		TipoVeicolo t = repT.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("null_vid")));
+							new VeicoloException(msgS.get("!exists_vei")));
 		repT.delete(t);
 		
 	}
@@ -58,7 +58,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 	public void update(TipoVeicoloRequest req) throws VeicoloException {
 		log.debug("modifying TipoVeicolo {}", req);
 		TipoVeicolo t = repT.findById(req.getId()).orElseThrow(() ->
-								new VeicoloException(msgS.get("null_vid")));
+								new VeicoloException(msgS.get("!exists_vei")));
 
 		if ((req.getTipoVeicolo() != null) && (!req.getTipoVeicolo().isBlank())) {
 			String myT = req.getTipoVeicolo().trim().toUpperCase();
@@ -67,7 +67,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 				t.setTipoVeicolo(myT);
 				repT.save(t);			
 			} else {
-				throw new VeicoloException("dup_vei");
+				throw new VeicoloException("exists_vei");
 			}
 		}
 	}

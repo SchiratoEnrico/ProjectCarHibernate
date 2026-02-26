@@ -34,7 +34,7 @@ public class ColoreImplementation implements IColoreServices{
 
         String myC = req.getColore().trim().toUpperCase();
         if (repC.findByColore(myC).isPresent())
-            throw new VeicoloException(msgS.get("dup_col"));
+            throw new VeicoloException(msgS.get("exists_col"));
 
         Colore c = new Colore();
         c.setColore(myC);
@@ -47,7 +47,7 @@ public class ColoreImplementation implements IColoreServices{
 		log.debug("delete colore con id: {}", id);
 
 		Colore c = repC.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_col")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")));
 
         repC.delete(c);
 		
@@ -68,7 +68,7 @@ public class ColoreImplementation implements IColoreServices{
 		 log.debug("colore update {}", req);
 
 		Colore c = repC.findById(req.getId())
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_cid")));
+                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")));
 		if ((req.getColore() != null) && (!req.getColore().isEmpty())) {
 			String myC = req.getColore().trim().toUpperCase();
 			Optional<Colore> c2 = repC.findByColore(myC);
@@ -76,7 +76,7 @@ public class ColoreImplementation implements IColoreServices{
 				c.setColore(myC);
 				repC.save(c);
 			} else {
-				throw new VeicoloException(msgS.get("dup_col"));
+				throw new VeicoloException(msgS.get("exists_col"));
 			}
 		} else {
 			throw new VeicoloException(msgS.get("null_col"));
