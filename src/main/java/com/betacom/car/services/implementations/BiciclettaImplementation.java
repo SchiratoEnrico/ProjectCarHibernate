@@ -7,19 +7,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.betacom.car.dto.filters.BiciFilter;
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.BiciRequest;
 import com.betacom.car.dto.output.BiciclettaDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Bicicletta;
 import com.betacom.car.models.TipoFreno;
 import com.betacom.car.models.TipoSospensione;
+import com.betacom.car.models.Veicolo;
 import com.betacom.car.repositories.IBiciclettaRepository;
 import com.betacom.car.repositories.ITipoFrenoRepository;
 import com.betacom.car.repositories.ITipoSospensioneRepository;
 import com.betacom.car.services.interfaces.IBiciclettaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
-import com.betacom.car.specifications.BiciSpecs;
+import com.betacom.car.specifications.VeicoloSpecs;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -84,16 +85,16 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	}
 
 	@Override
-	public List<BiciclettaDTO> filter(BiciFilter filter) {
+	public List<BiciclettaDTO> filter(VeicoloFilter filter) {
 			
 			//faccio le specification col filter
-			Specification<Bicicletta> spec = BiciSpecs.withFilter(filter);
+			Specification<Veicolo> spec = VeicoloSpecs.withFilter(filter);
 
 			//faccio il find applicando i filtri
-		    List<Bicicletta> entities = repB.findAll(spec);
+		    List<Veicolo> entities = repB.findAll(spec);
 			
 			return entities.stream()
-							.map(e -> Utils.buildBiciclettaDTO(e))
+							.map(e -> Utils.buildBiciclettaDTO((Bicicletta)e))
 							.collect(Collectors.toList());
 		}
 

@@ -1,10 +1,12 @@
 package com.betacom.car.services.interfaces;
 import java.util.List;
+
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.exceptions.VeicoloException;
 
 import jakarta.transaction.Transactional;
 
-public interface IBigModelsServices<IN, OUT, ID, FILT> {
+public interface IBigModelsServices<IN, OUT, ID> {
 	
 	@Transactional (rollbackOn = Exception.class)
     public Integer create(IN req) throws VeicoloException;
@@ -18,5 +20,5 @@ public interface IBigModelsServices<IN, OUT, ID, FILT> {
     List<OUT> findAll() throws VeicoloException;
     OUT findById(ID id) throws VeicoloException;
 
-    List<OUT> filter(FILT filter);
+    List<OUT> filter(VeicoloFilter filter);
 }

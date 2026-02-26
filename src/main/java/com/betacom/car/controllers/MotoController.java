@@ -1,5 +1,4 @@
 package com.betacom.car.controllers;
-import com.betacom.car.response.Resp;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,12 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.car.dto.filters.MacchinaFilter;
-import com.betacom.car.dto.filters.MotoFilter;
-import com.betacom.car.dto.input.MacchinaFilterRequest;
-import com.betacom.car.dto.input.MotoFilterRequest;
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.MotoRequest;
+import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.exceptions.VeicoloException;
+import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.utilities.FilterTranslator;
@@ -122,7 +120,7 @@ public class MotoController {
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			MotoFilter filter = filtT.toMotoFilter(MotoFilterRequest.builder()
+			VeicoloFilter filter = filtT.toVeicoloFilter(VeicoloFilterRequest.builder()
 					.id(id)
 					.cc(cc)
 					.numeroMarce(numeroMarce)

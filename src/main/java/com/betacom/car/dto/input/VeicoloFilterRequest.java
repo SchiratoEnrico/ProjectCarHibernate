@@ -13,13 +13,28 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class VeicoloFilterRequest {
 	
-		private Integer id;
-	 	private Integer numeroRuote;
-	    private Integer anno;
-	    private String marca;
-	    private String modello;
-	    private String colore;
-	    private String categoria;
-	    private String tipoAlimentazione;
-	    private String tipoVeicolo;
+	 // Veicolo base
+    private Integer numeroRuote;
+    private Integer anno;
+    private String marca;
+    private String colore;
+    private String categoria;
+    private String modello;
+    private String tipoAlimentazione;
+    private String tipoVeicolo;
+    private Integer id;
+    
+    // Moto
+    private String targa;
+    private Integer cc;
+    private Integer numeroMarce;
+
+    // Macchina
+    private Integer numeroPorte;
+
+    // Bicicletta
+    private String freno;
+    private String sospensione;
+    private Boolean pieghevole;
+
 }

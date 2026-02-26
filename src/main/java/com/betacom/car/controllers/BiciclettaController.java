@@ -12,15 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.car.dto.filters.BiciFilter;
-import com.betacom.car.dto.filters.MacchinaFilter;
-import com.betacom.car.dto.input.BiciFilterRequest;
 import com.betacom.car.dto.input.BiciRequest;
-import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IBiciclettaServices;
-import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.FilterTranslator;
 import com.betacom.car.utilities.Utils;
@@ -123,7 +119,7 @@ public class BiciclettaController {
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
-	        BiciFilterRequest filter = BiciFilterRequest.builder()
+	        VeicoloFilterRequest filter = VeicoloFilterRequest.builder()
 	        							.numeroRuote(numeroRuote)
 	        							.anno(anno)
 	        							.colore(Utils.formatStringParam(colore))
@@ -138,7 +134,7 @@ public class BiciclettaController {
 	        							.modello(Utils.formatStringParam(modello))
 	        							.build();
 
-	        r = biciS.filter(filT.toBiciFilter(filter));
+	        r = biciS.filter(filT.toVeicoloFilter(filter));
 	    } catch (VeicoloException e) {
 	        r = e.getMessage();
 	        status = HttpStatus.BAD_REQUEST;

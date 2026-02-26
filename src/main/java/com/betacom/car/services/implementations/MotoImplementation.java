@@ -6,15 +6,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.betacom.car.dto.filters.MotoFilter;
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.MotoRequest;
 import com.betacom.car.dto.output.MotoDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Moto;
+import com.betacom.car.models.Veicolo;
 import com.betacom.car.repositories.IMotoRepository;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
-import com.betacom.car.specifications.MotoSpecs;
+import com.betacom.car.specifications.VeicoloSpecs;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -88,12 +89,13 @@ public class MotoImplementation implements IMotoServices{
 
 
 	@Override
-	public List<MotoDTO> filter(MotoFilter filter) {
-		Specification<Moto> spec = MotoSpecs.withFilter(filter);
-		List<Moto> entities = repM.findAll(spec);
+	public List<MotoDTO> filter(VeicoloFilter filter) {
+		Specification<Veicolo> spec = VeicoloSpecs.withFilter(filter);
+		
+		List<Veicolo> entities = repM.findAll(spec);
 		
 		return entities.stream()
-				.map(m->Utils.buildMotoDTO(m))
+				.map(m->Utils.buildMotoDTO((Moto)m))
 				.toList();
 	}
 	

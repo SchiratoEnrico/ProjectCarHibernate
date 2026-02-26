@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.car.dto.filters.MacchinaFilter;
-import com.betacom.car.dto.input.MacchinaFilterRequest;
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMacchinaServices;
@@ -127,7 +127,7 @@ public class MacchinaController {
 
 	    try {
 			
-	    	MacchinaFilter filter = filtT.toMacchinaFilter(MacchinaFilterRequest.builder()
+	    	VeicoloFilter filter = filtT.toVeicoloFilter(VeicoloFilterRequest.builder()
 	        		.id(id)
 	    			.numeroRuote(numeroRuote)
 	        		.anno(anno)

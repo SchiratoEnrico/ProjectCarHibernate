@@ -7,10 +7,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.betacom.car.models.Macchina;
+import com.betacom.car.models.Veicolo;
 
 
 @Repository
-public interface IMacchinaRepository extends JpaRepository<Macchina, Integer>, JpaSpecificationExecutor<Macchina>  {
+public interface IMacchinaRepository extends JpaRepository<Macchina, Integer>, JpaSpecificationExecutor<Veicolo>  {
 
 	Optional<Macchina> findByTarga(String targa); 
 

@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.exceptions.VeicoloException;
+import com.betacom.car.services.interfaces.IBiciclettaServices;
+import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
+import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.services.interfaces.IVeicoloServices;
 import com.betacom.car.utilities.FilterTranslator;
 import com.betacom.car.utilities.Utils;
@@ -24,6 +26,9 @@ public class VeicoloController {
 	private final IVeicoloServices veiS;
 	private final IMessagesServices msgS;
 	private final FilterTranslator filT;
+	private final IMacchinaServices macchinaS;
+	private final IMotoServices motoS;
+	private final IBiciclettaServices biciS;
 	
 	@GetMapping ("/list")
 	private ResponseEntity<Object> list(){
@@ -55,6 +60,7 @@ public class VeicoloController {
 	@GetMapping("/filter")
 	public ResponseEntity<Object> filter(
 	        @RequestParam(required = false) Integer numeroRuote,
+	        @RequestParam(required = false) Integer id,
 	        @RequestParam(required = false) Integer anno,
 	        @RequestParam(required = false) String marca,
 	        @RequestParam(required = false) String colore,
@@ -65,13 +71,18 @@ public class VeicoloController {
 	        @RequestParam(required = false) String freno,
 	        @RequestParam(required = false) String sospensione,
 	        @RequestParam(required = false) Integer numeroMarce,
-	        @RequestParam(required = false) Boolean pieghevole
+	        @RequestParam(required = false) Boolean pieghevole,
+	        @RequestParam(required=false) String targa,
+	        @RequestParam(required=false) Integer cc,
+			@RequestParam(required = false) Integer numeroPorte
+
 	) {
 	    Object r = new Object();
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
 	    	VeicoloFilterRequest filter = VeicoloFilterRequest.builder()
+	    								.id(id)
 	        							.numeroRuote(numeroRuote)
 	        							.anno(anno)
 	        							.colore(Utils.formatStringParam(colore))
@@ -80,10 +91,17 @@ public class VeicoloController {
 	        							.tipoAlimentazione(Utils.formatStringParam(tipoAlimentazione))
 	        							.tipoVeicolo(Utils.formatStringParam(tipoVeicolo))
 	        							.modello(Utils.formatStringParam(modello))
+	        							.targa(Utils.formatStringParam(targa))
+	        							.numeroPorte(numeroPorte)
+	        			        		.cc(cc)
+	        			        		.freno(Utils.formatStringParam(freno))
+	        			        		.numeroMarce(numeroMarce)
+	        							.pieghevole(pieghevole)
+	        							.sospensione(Utils.formatStringParam(sospensione))
 	        							.build();
-
-	    	VeicoloFilter myF = new VeicoloFilter();
-	        r = veiS.filter(filT.toVeicoloFilter(myF, filter));
+	    	
+	        r = veiS.filter(filT.toVeicoloFilter(filter));
+	    	
 	    } catch (VeicoloException e) {
 	        r = e.getMessage();
 	        status = HttpStatus.BAD_REQUEST;

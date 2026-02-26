@@ -1,19 +1,22 @@
 package com.betacom.car.specifications;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import com.betacom.car.dto.filters.VeicoloFilter;
+import com.betacom.car.models.Bicicletta;
+import com.betacom.car.models.Macchina;
+import com.betacom.car.models.Moto;
 import com.betacom.car.models.Veicolo;
 
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
 
 public class VeicoloSpecs {
 
 	//la specifications funziona per macchina, moto, bici e veicolo
-    public static <T extends Veicolo> Specification<T> baseFilter(VeicoloFilter f) {
+    public static Specification<Veicolo> withFilter(VeicoloFilter f) {
         
     	//root è una tabella (veicolo, macchina, moto,...)
     	//query è la query che costruirà hibernate
@@ -21,60 +24,88 @@ public class VeicoloSpecs {
     	//il risultato finale è un predicate = una condizione sql
     	
     	
+//    	@Override
+//        public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+//            
+//        }
+    	
+    	//qui faccio una lambda che override la funzione sopra di Specificatio
     	//creo la funzione che costruisce WHERE della query
+    	
     	return (root, query, cb) -> {
 
-    		// se non ci sono filtri return true che significa nessuna condizione
-            if (f == null) return cb.conjunction();
+            List<Predicate> p = new ArrayList<>();
 
-            //questa è una lista di condizioni
-            List<Predicate> p = new ArrayList<Predicate>();
-
-            
-            //questo è l'equivalente di fare numeroRuote = ?  in sql
-            //root.get("numeroRuote) è il campo della entity, ovvero Veicolo
-            
-            if (f.getId() != null) {
-                p.add(cb.equal(root.get("id"), f.getId()));
-            }
-            
-            if (f.getNumeroRuote() != null) {
+            // ===== Veicolo base =====
+            if(f.getNumeroRuote()!=null)
                 p.add(cb.equal(root.get("numeroRuote"), f.getNumeroRuote()));
-            }
 
-            
-            // Qui assumo Integer (come nel filter).
-            if (f.getAnno() != null) {
+            if(f.getAnno()!=null)
                 p.add(cb.equal(root.get("annoProduzione"), f.getAnno()));
+
+            if(f.getModello()!=null)
+                p.add(cb.like(cb.lower(root.get("modello")), "%"+f.getModello().toLowerCase()+"%"));
+
+            if(f.getIdMarca()!=null)
+                p.add(cb.equal(root.join("marca").get("id"), f.getIdMarca()));
+
+            if(f.getIdColore()!=null)
+                p.add(cb.equal(root.join("colore").get("id"), f.getIdColore()));
+
+            if(f.getIdCategoria()!=null)
+                p.add(cb.equal(root.join("categoria").get("id"), f.getIdCategoria()));
+
+            if(f.getIdTipoAlimentazione()!=null)
+                p.add(cb.equal(root.join("tipoAlimentazione").get("id"), f.getIdTipoAlimentazione()));
+
+            if(f.getIdTipoVeicolo()!=null)
+                p.add(cb.equal(root.join("tipoVeicolo").get("id"), f.getIdTipoVeicolo()));
+
+            // ===== Campi comuni Moto + Macchina =====
+            if(f.getTarga()!=null) {
+                p.add(cb.or(
+                    cb.equal(cb.treat(root, Moto.class).get("targa"), f.getTarga()),
+                    cb.equal(cb.treat(root, Macchina.class).get("targa"), f.getTarga())
+                ));
             }
 
-            //qui c'è anche da fare un join verso le varie tabelle di marca,colore, categoria
-            if (f.getIdMarca() != null) {
-                p.add(cb.equal(root.join("marca", JoinType.INNER).get("id"), f.getIdMarca()));
+            if(f.getCc()!=null) {
+                p.add(cb.or(
+                    cb.equal(cb.treat(root, Moto.class).get("cc"), f.getCc()),
+                    cb.equal(cb.treat(root, Macchina.class).get("cc"), f.getCc())
+                ));
             }
 
-            if (f.getIdColore() != null) {
-                p.add(cb.equal(root.join("colore", JoinType.INNER).get("id"), f.getIdColore()));
+            // ===== numeroMarce (Moto + Bici) =====
+            if(f.getNumeroMarce()!=null) {
+                p.add(cb.or(
+                    cb.equal(cb.treat(root, Moto.class).get("numeroMarce"), f.getNumeroMarce()),
+                    cb.equal(cb.treat(root, Bicicletta.class).get("numeroMarce"), f.getNumeroMarce())
+                ));
             }
 
-            if (f.getIdCategoria() != null) {
-                p.add(cb.equal(root.join("categoria", JoinType.INNER).get("id"), f.getIdCategoria()));
+            // ===== Macchina =====
+            if(f.getNumeroPorte()!=null) {
+                p.add(cb.equal(cb.treat(root, Macchina.class).get("numeroPorte"), f.getNumeroPorte()));
             }
 
-            if (f.getIdTipoAlimentazione() != null) {
-                p.add(cb.equal(root.join("tipoAlimentazione", JoinType.INNER).get("id"), f.getIdTipoAlimentazione()));
-            }
-            
-            if (f.getIdTipoVeicolo() != null) {
-                p.add(cb.equal(root.join("tipoVeicolo", JoinType.INNER).get("id"), f.getIdTipoVeicolo()));
+            // ===== Bicicletta =====
+            if(f.getIdFreno()!=null) {
+                p.add(cb.equal(cb.treat(root, Bicicletta.class)
+                        .join("freno").get("id"), f.getIdFreno()));
             }
 
-            
-            //da aggingere modello
-            
-            
-            //qui in pratica se la lista dei filtri è vuota restituisco true, se ci sono filtri li unico con AND
-            return p.isEmpty() ? cb.conjunction() : cb.and(p.toArray(new Predicate[0]));
+            if(f.getIdSospensione()!=null) {
+                p.add(cb.equal(cb.treat(root, Bicicletta.class)
+                        .join("sospensione").get("id"), f.getIdSospensione()));
+            }
+
+            if(f.getPieghevole()!=null) {
+                p.add(cb.equal(cb.treat(root, Bicicletta.class)
+                        .get("pieghevole"), f.getPieghevole()));
+            }
+
+            return cb.and(p.toArray(new Predicate[0]));
         };
     }
 }

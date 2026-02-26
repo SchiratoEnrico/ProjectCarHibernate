@@ -2,13 +2,7 @@ package com.betacom.car.utilities;
 
 import org.springframework.stereotype.Service;
 
-import com.betacom.car.dto.filters.BiciFilter;
-import com.betacom.car.dto.filters.MacchinaFilter;
-import com.betacom.car.dto.filters.MotoFilter;
 import com.betacom.car.dto.filters.VeicoloFilter;
-import com.betacom.car.dto.input.BiciFilterRequest;
-import com.betacom.car.dto.input.MacchinaFilterRequest;
-import com.betacom.car.dto.input.MotoFilterRequest;
 import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.repositories.ICategoriaRepository;
@@ -36,8 +30,10 @@ public  class FilterTranslator {
 	private final IMessagesServices msgS;
 	
 	
-	public VeicoloFilter toVeicoloFilter(VeicoloFilter f, VeicoloFilterRequest req) {
+	public VeicoloFilter toVeicoloFilter(VeicoloFilterRequest req) {
 
+		VeicoloFilter f = new VeicoloFilter();
+		
         if (req == null) 
         	return f;
 
@@ -62,18 +58,8 @@ public  class FilterTranslator {
         if (notBlank(req.getTipoVeicolo())) {
             f.setIdTipoVeicolo(findTipoVeicoloId(req.getTipoVeicolo()));
         }
-
-        return f;
-    }
-	
-	
-	public MacchinaFilter toMacchinaFilter(MacchinaFilterRequest req) {
         
-		MacchinaFilter f = new MacchinaFilter();
-		
-		buildCommonFields(toVeicoloFilter(f, req), f);
-
-		if (req.getCc() != null) {
+        if (req.getCc() != null) {
 	        f.setCc(req.getCc());
 	    }
 
@@ -84,37 +70,8 @@ public  class FilterTranslator {
 	    if (req.getTarga() != null && !req.getTarga().isBlank()) {
 	        f.setTarga(req.getTarga());
 	    }
-	    
-        return f;
-    }
-	
-	public MotoFilter toMotoFilter(MotoFilterRequest req) {
         
-		MotoFilter f = new MotoFilter();
-		
-		buildCommonFields(toVeicoloFilter(f, req), f);
-
-		if (req.getCc() != null) {
-	        f.setCc(req.getCc());
-	    }
-
 	    if (req.getNumeroMarce() != null) {
-	        f.setNumeroMarce(req.getNumeroMarce());
-	    }
-
-	    if (req.getTarga() != null && !req.getTarga().isBlank()) {
-	        f.setTarga(req.getTarga());
-	    }
-	    
-        return f;
-    }
-	
-	public BiciFilter toBiciFilter(BiciFilterRequest req) {
-		BiciFilter f = new BiciFilter();
-		
-		buildCommonFields(toVeicoloFilter(f, req), f);
-		
-		if (req.getNumeroMarce() != null) {
 	        f.setNumeroMarce(req.getNumeroMarce());
 	    }
 
@@ -130,24 +87,16 @@ public  class FilterTranslator {
             f.setIdSospensione(findSospId(req.getSospensione()));
         }
 	    
-	    return f;
-	}
+        return f;
+    }
+	
+	
+	
 	
 	//per fare gli if sopra un po' più puliti
 	private boolean notBlank(String s) { 
 		return s != null && !s.isBlank(); 
 	}
-	
-	
-	private void buildCommonFields(VeicoloFilter origin, VeicoloFilter destination) {
-        destination.setNumeroRuote(origin.getNumeroRuote());
-        destination.setAnno(origin.getAnno());
-        destination.setIdMarca(origin.getIdMarca());
-        destination.setModello(origin.getModello());
-        destination.setIdColore(origin.getIdColore());
-        destination.setIdCategoria(origin.getIdCategoria());
-        destination.setIdTipoAlimentazione(origin.getIdTipoAlimentazione());
-    }
 	
 	 private Integer findMarcaId(String v) {
 	        return marcaR.findByMarca(v)

@@ -1,16 +1,13 @@
 package com.betacom.car.utilities;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
-import com.betacom.car.controllers.CategoriaController;
+
 import com.betacom.car.dto.filters.VeicoloFilter;
-import com.betacom.car.dto.input.MacchinaRequest;
 import com.betacom.car.dto.input.VeicoloRequest;
 import com.betacom.car.dto.output.BiciclettaDTO;
 import com.betacom.car.dto.output.CategoriaDTO;
@@ -324,4 +321,24 @@ public class Utils {
 		}
 		return myP;
 	}
+	
+	
+	public void validateFilter(VeicoloFilter f) {
+
+        boolean hasBici = f.getIdFreno()!=null || f.getIdSospensione()!=null || f.getPieghevole()!=null;
+
+        boolean hasMotoMacchina = f.getTarga()!=null || f.getCc()!=null;
+
+        boolean hasMoto = f.getNumeroMarce()!=null;   // moto
+        boolean hasMacchina = f.getNumeroPorte()!=null;
+
+        // Bici incompatibile con campi motorizzati
+        if(hasBici && hasMotoMacchina)
+            throw new VeicoloException(msgS.get("!exists_fil"));
+
+        // Moto vs Macchina
+        if(hasMoto && hasMacchina)
+            throw new VeicoloException(msgS.get("!exists_fil"));
+
+    }
 }

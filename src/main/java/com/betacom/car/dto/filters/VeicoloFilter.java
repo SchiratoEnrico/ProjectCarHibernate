@@ -23,4 +23,15 @@ public class VeicoloFilter {
 	    private Integer idCategoria;
 	    private Integer idTipoAlimentazione;
 	    private Integer idTipoVeicolo;
+	    
+	    private Integer numeroMarce;
+	    private Integer idFreno;
+	    private Integer idSospensione;
+	    private Boolean pieghevole;
+	    
+		private Integer cc;
+
+	    private Integer numeroPorte;
+
+	    private String targa;
 }
