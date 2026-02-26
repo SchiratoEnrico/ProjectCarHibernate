@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 @NoArgsConstructor
-public abstract class VeicoloFilter {	
+public class VeicoloFilter {	
 		
 		private Integer id;
 	

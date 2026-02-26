@@ -36,12 +36,10 @@ public  class FilterTranslator {
 	private final IMessagesServices msgS;
 	
 	
-	private VeicoloFilter toVeicoloFilter(VeicoloFilter f, VeicoloFilterRequest req) {
+	public VeicoloFilter toVeicoloFilter(VeicoloFilter f, VeicoloFilterRequest req) {
 
         if (req == null) 
         	return f;
-
-        
 
         if(req.getNumeroRuote() != null)
         	f.setNumeroRuote(req.getNumeroRuote());
