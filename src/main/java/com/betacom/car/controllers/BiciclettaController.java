@@ -17,6 +17,7 @@ import com.betacom.car.dto.filters.MacchinaFilter;
 import com.betacom.car.dto.input.BiciFilterRequest;
 import com.betacom.car.dto.input.BiciRequest;
 import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IBiciclettaServices;
 import com.betacom.car.services.interfaces.IMacchinaServices;
@@ -40,7 +41,8 @@ public class BiciclettaController {
         HttpStatus status = HttpStatus.OK;
         try {
             Integer id = biciS.create(req);
-        } catch (Exception e) {
+            r.setMsg(msgS.get("rest_created")  + " con id: " + id);
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -53,7 +55,8 @@ public class BiciclettaController {
         HttpStatus status = HttpStatus.OK;
         try {
             biciS.delete(id);
-        } catch (Exception e) {
+            r.setMsg(msgS.get("rest_deleted"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -67,7 +70,7 @@ public class BiciclettaController {
         try {
             biciS.update(req);
             r.setMsg(msgS.get("rest_updated"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -80,7 +83,7 @@ public class BiciclettaController {
 		HttpStatus status = HttpStatus.OK;
 		try {
             r = biciS.findAll();
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;
         }
@@ -136,7 +139,7 @@ public class BiciclettaController {
 	        							.build();
 
 	        r = biciS.filter(filT.toBiciFilter(filter));
-	    } catch (Exception e) {
+	    } catch (VeicoloException e) {
 	        r = e.getMessage();
 	        status = HttpStatus.BAD_REQUEST;
 	    }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.car.dto.input.CategoriaRequest;
 import com.betacom.car.dto.input.TipoAlimentazioneRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.ICategoriaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -34,7 +35,7 @@ public class CategoriaController {
 
         try {
             r = categoriaS.list();
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;
         }
@@ -49,7 +50,7 @@ public class CategoriaController {
         try {
             categoriaS.create(req);
             r.setMsg(msgS.get("rest_created"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -64,8 +65,8 @@ public class CategoriaController {
 
         try {
             categoriaS.delete(id);
-            r.setMsg(msgS.get("rest_delited"));
-        } catch (Exception e) {
+            r.setMsg(msgS.get("rest_deleted"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -80,7 +81,7 @@ public class CategoriaController {
         try {
         	categoriaS.update(req);
             r.setMsg(msgS.get("rest_updated"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }

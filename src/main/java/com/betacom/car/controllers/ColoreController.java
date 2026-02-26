@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.car.dto.input.ColoreRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IColoreServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -33,7 +34,7 @@ public class ColoreController {
 
         try {
             r = coloreS.list();
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;
         }
@@ -48,7 +49,7 @@ public class ColoreController {
         try {
             coloreS.create(req);
             r.setMsg(msgS.get("rest_created"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -63,8 +64,8 @@ public class ColoreController {
 
         try {
             coloreS.delete(id);
-            r.setMsg(msgS.get("rest_delited"));
-        } catch (Exception e) {
+            r.setMsg(msgS.get("rest_deleted"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -79,7 +80,7 @@ public class ColoreController {
         try {
         	coloreS.update(req);
             r.setMsg(msgS.get("rest_updated"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }

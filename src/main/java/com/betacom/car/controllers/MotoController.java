@@ -17,6 +17,7 @@ import com.betacom.car.dto.filters.MotoFilter;
 import com.betacom.car.dto.input.MacchinaFilterRequest;
 import com.betacom.car.dto.input.MotoFilterRequest;
 import com.betacom.car.dto.input.MotoRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.utilities.FilterTranslator;
@@ -38,10 +39,10 @@ public class MotoController {
 		Resp r = new Resp();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			motS.create(req);
-			r.setMsg(msgS.get("rest_created"));
+			Integer id = motS.create(req);
+			r.setMsg(msgS.get("rest_created") + " con id: " + id);
 		}
-		catch(Exception e) {
+		catch(VeicoloException e) {
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -56,7 +57,7 @@ public class MotoController {
 			motS.update(req);
 			r.setMsg(msgS.get("rest_updated"));
 		}
-		catch(Exception e) {
+		catch(VeicoloException e) {
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -70,7 +71,7 @@ public class MotoController {
 		try {
 			motS.delete(id);
 			r.setMsg(msgS.get("rest_deleted"));
-		} catch (Exception e) {
+		} catch (VeicoloException e) {
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 		}
@@ -138,7 +139,7 @@ public class MotoController {
 	   
 	        r = motS.filter(filter);
 		}
-		catch(Exception e) {
+		catch(VeicoloException e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
 		}

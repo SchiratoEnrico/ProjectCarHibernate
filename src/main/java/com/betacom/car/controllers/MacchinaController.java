@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.car.dto.filters.MacchinaFilter;
 import com.betacom.car.dto.input.MacchinaFilterRequest;
 import com.betacom.car.dto.input.MacchinaRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMacchinaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -40,7 +41,7 @@ public class MacchinaController {
         try {
             Integer id = macchinaS.create(req);
             r.setMsg(msgS.get("rest_created") + " con id: " + id);
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -55,8 +56,8 @@ public class MacchinaController {
 
         try {
             macchinaS.delete(id);
-            r.setMsg(msgS.get("rest_delited"));
-        } catch (Exception e) {
+            r.setMsg(msgS.get("rest_deleted"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -71,7 +72,7 @@ public class MacchinaController {
         try {
             macchinaS.update(req);
             r.setMsg(msgS.get("rest_updated"));
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -85,7 +86,7 @@ public class MacchinaController {
 
 		try {
             r = macchinaS.findAll();
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;
         }
@@ -142,7 +143,7 @@ public class MacchinaController {
 	   
 	        r = macchinaS.filter(filter);
 	    
-	    } catch (Exception e) {
+	    } catch (VeicoloException e) {
 	        r = e.getMessage();
 	        status = HttpStatus.BAD_REQUEST;
 	    }

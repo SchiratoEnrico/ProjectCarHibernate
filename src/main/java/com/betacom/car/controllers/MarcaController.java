@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.car.dto.input.MarcaRequest;
+import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.response.Resp;
 import com.betacom.car.services.interfaces.IMarcaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -32,7 +33,7 @@ public class MarcaController {
 
         try {
             r = marcaS.list();
-        } catch (Exception e) {
+        } catch (VeicoloException e) {
             r = e.getMessage();
             status = HttpStatus.BAD_REQUEST;
         }
@@ -46,7 +47,8 @@ public class MarcaController {
 
         try {
         	marcaS.create(req);
-        } catch (Exception e) {
+        	r.setMsg(msgS.get("rest_created"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -60,7 +62,8 @@ public class MarcaController {
 
         try {
         	marcaS.delete(id);
-        } catch (Exception e) {
+        	r.setMsg(msgS.get("rest_deleted"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
@@ -74,7 +77,8 @@ public class MarcaController {
 
         try {
         	marcaS.update(req);
-        } catch (Exception e) {
+        	r.setMsg(msgS.get("rest_updated"));
+        } catch (VeicoloException e) {
             r.setMsg(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
