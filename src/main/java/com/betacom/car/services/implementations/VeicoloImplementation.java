@@ -39,7 +39,7 @@ public class VeicoloImplementation implements IVeicoloServices<VeicoloDTO, Integ
 	@Override
 	public VeicoloDTO findById(Integer id) throws VeicoloException {
 		Veicolo v = repV.findById(id).orElseThrow(() -> 
-									new VeicoloException("null_veh"));
+									new VeicoloException("!exists_veh"));
 		return (VeicoloDTO) myMapper.map(v);
 	}
 
