@@ -148,10 +148,10 @@ public class Utils {
 				v.setCategoria(c.get());
 			}
 		}
-
+		
 		if (req.getTipoVeicolo() != null && (!req.getTipoVeicolo().isBlank())) {
-			String tv = req.getTipoVeicolo().trim().toUpperCase();
-			Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(tv);
+			String c = req.getTipoVeicolo().trim().toUpperCase();
+			Optional<TipoVeicolo> tV = repVei.findByTipoVeicolo(c);
 			if (!tV.isEmpty()) {
 				v.setTipoVeicolo(tV.get());
 			}
@@ -321,7 +321,7 @@ public class Utils {
 	}
 	
 	//per validare se i filtri possono essere compatibili (non posso filtrare per tipofreno e targa)
-	public void validateFilter(VeicoloFilter f) throws VeicoloException{
+	public static void validateFilter(VeicoloFilter f) throws VeicoloException{
 
         boolean hasBici = f.getIdFreno()!=null || f.getIdSospensione()!=null || f.getPieghevole()!=null;
         boolean hasMotoMacchina = f.getTarga()!=null || f.getCc()!=null;
