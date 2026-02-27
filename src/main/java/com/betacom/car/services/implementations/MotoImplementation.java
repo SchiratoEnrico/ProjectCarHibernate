@@ -39,8 +39,6 @@ public class MotoImplementation implements IMotoServices{
 		
 		mot = checkReqMoto(req, mot);
 		
-		Utils.validateTarga(mot);
-		
 		if (repM.findByTarga(mot.getTarga()).isPresent())
             throw new VeicoloException(msgS.get("exists_tar"));
 		
@@ -67,10 +65,7 @@ public class MotoImplementation implements IMotoServices{
 		
 		mot = optReqMoto(req, mot);
 		
-		Utils.validateTarga(mot);
-		
 		repM.save(mot);
-
 	}
 
 	@Override
@@ -121,8 +116,10 @@ public class MotoImplementation implements IMotoServices{
         else
             throw new VeicoloException(msgS.get("null_mar"));
 
-        if (req.getTarga() != null && !req.getTarga().isBlank())
+        if (req.getTarga() != null && !req.getTarga().isBlank()) {
             m.setTarga(req.getTarga().trim().toUpperCase());
+    		Utils.validateTarga(m);
+        }
         else
             throw new VeicoloException(msgS.get("null_tar"));
 
@@ -142,9 +139,10 @@ public class MotoImplementation implements IMotoServices{
         if (req.getNumeroMarce() != null)
             m.setNumeroMarce(req.getNumeroMarce());
 
-
-        if (req.getTarga() != null && !req.getTarga().isBlank())
+        if (req.getTarga() != null && !req.getTarga().isBlank()) {
             m.setTarga(req.getTarga().trim().toUpperCase());
+    		Utils.validateTarga(m);
+        }
 
         return m;
     }

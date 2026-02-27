@@ -38,8 +38,6 @@ public class MacchinaImplementation implements IMacchinaServices{
         Macchina m = new Macchina();
         m = checkReqMacc(req, m);
         
-        Utils.validateTarga(m);
-        
         // controllo se targa presente
         if (repM.findByTarga(m.getTarga()).isPresent()) {
         	throw new VeicoloException(msgS.get("exists_tar"));
@@ -70,8 +68,6 @@ public class MacchinaImplementation implements IMacchinaServices{
                 .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
         
         m = optReqMacc(req, m);
-       
-        Utils.validateTarga(m);
        
         repM.save(m);	
 	}
@@ -126,8 +122,10 @@ public class MacchinaImplementation implements IMacchinaServices{
 	        else
 	            throw new VeicoloException(msgS.get("null_por"));
 
-	        if (req.getTarga() != null && !req.getTarga().isBlank())
+	        if (req.getTarga() != null && !req.getTarga().isBlank()) {
 	            m.setTarga(req.getTarga().trim().toUpperCase());
+	            Utils.validateTarga(m);
+	        } 
 	        else
 	            throw new VeicoloException(msgS.get("null_tar"));
 
@@ -148,8 +146,10 @@ public class MacchinaImplementation implements IMacchinaServices{
 	            m.setNumeroPorte(req.getNumeroPorte());
 
 
-	        if (req.getTarga() != null && !req.getTarga().isBlank())
+	        if (req.getTarga() != null && !req.getTarga().isBlank()) {
 	            m.setTarga(req.getTarga().trim().toUpperCase());
+	            Utils.validateTarga(m);
+	        }
 	        
 	        return m;
 	    }
