@@ -120,7 +120,7 @@ public class MotoImplementation implements IMotoServices{
     		Utils.validateTarga(m);
         }
         else
-            throw new VeicoloException("!valid_tar");
+            throw new VeicoloException("!null_tar");
 
         return m;
     }

@@ -351,7 +351,7 @@ public class Utils {
 			String regex = "^[A-HJ-NPR-TV-Z]{2}[0-9]{3}[A-HJ-NPR-TV-Z]{2}$";
 			Macchina m = (Macchina) req; 
 		    if (m.getTarga() == null || !m.getTarga().matches(regex)) {
-		        throw new VeicoloException("null_tar");
+		        throw new VeicoloException("!valid_tar");
 		    }
 	    }else {
 			Moto m = (Moto) req;
@@ -363,7 +363,7 @@ public class Utils {
 				regex = "^[XY]{1}[0-9]{5}$";
 			
 			if (m.getTarga() == null || !m.getTarga().matches(regex)) {
-		        throw new VeicoloException("null_tar");
+		        throw new VeicoloException("!valid_tar");
 		    }
 	    }
 	}
