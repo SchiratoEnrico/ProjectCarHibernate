@@ -12,7 +12,8 @@ import com.betacom.car.models.Moto;
 import com.betacom.car.models.Veicolo;
 
 import jakarta.persistence.criteria.Predicate;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class VeicoloSpecs {
 
 	//la specifications funziona per macchina, moto, bici e veicolo
@@ -29,6 +30,9 @@ public class VeicoloSpecs {
 //            
 //        }
     	
+    	//root è la tabella
+    	
+    	
     	//qui faccio una lambda che override la funzione sopra di Specificatio
     	//creo la funzione che costruisce WHERE della query
     	
@@ -36,10 +40,11 @@ public class VeicoloSpecs {
 
             List<Predicate> p = new ArrayList<>();
 
-            // ===== Veicolo base =====
+            // campi comuni
             if(f.getNumeroRuote()!=null)
                 p.add(cb.equal(root.get("numeroRuote"), f.getNumeroRuote()));
-
+            
+            //.equal() unisce tipo anno_produzione = ?
             if(f.getAnno()!=null)
                 p.add(cb.equal(root.get("annoProduzione"), f.getAnno()));
 
@@ -76,7 +81,7 @@ public class VeicoloSpecs {
                 ));
             }
 
-            // ===== numeroMarce (Moto + Bici) =====
+            // sia per bici che per moto
             if(f.getNumeroMarce()!=null) {
                 p.add(cb.or(
                     cb.equal(cb.treat(root, Moto.class).get("numeroMarce"), f.getNumeroMarce()),
@@ -84,17 +89,18 @@ public class VeicoloSpecs {
                 ));
             }
 
-            // ===== Macchina =====
+            //	per macchina
             if(f.getNumeroPorte()!=null) {
                 p.add(cb.equal(cb.treat(root, Macchina.class).get("numeroPorte"), f.getNumeroPorte()));
             }
 
-            // ===== Bicicletta =====
+            // per bici
             if(f.getIdFreno()!=null) {
                 p.add(cb.equal(cb.treat(root, Bicicletta.class)
                         .join("freno").get("id"), f.getIdFreno()));
             }
 
+            //.treat() serve per fare i join
             if(f.getIdSospensione()!=null) {
                 p.add(cb.equal(cb.treat(root, Bicicletta.class)
                         .join("sospensione").get("id"), f.getIdSospensione()));
@@ -104,7 +110,8 @@ public class VeicoloSpecs {
                 p.add(cb.equal(cb.treat(root, Bicicletta.class)
                         .get("pieghevole"), f.getPieghevole()));
             }
-
+            
+            //unisco tutte le condizioni con AND
             return cb.and(p.toArray(new Predicate[0]));
         };
     }
