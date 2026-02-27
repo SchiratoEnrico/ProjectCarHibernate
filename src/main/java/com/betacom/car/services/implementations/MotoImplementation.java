@@ -31,7 +31,7 @@ public class MotoImplementation implements IMotoServices{
 	@Transactional (rollbackFor = VeicoloException.class)
 	@Override
 	public Integer create(MotoRequest req) throws VeicoloException {
-		log.debug("create {}", req);
+		log.debug("create moto {}", req);
 		
 		Moto mot = new Moto();
 		
@@ -45,8 +45,9 @@ public class MotoImplementation implements IMotoServices{
 	}
 
 	@Override
+	@Transactional (rollbackFor = VeicoloException.class)
 	public void delete(Integer id) throws VeicoloException {
-		log.debug("delete {}", id);
+		log.debug("delete moto {}", id);
 		
 		Moto mot = repM.findById(id)
 				.orElseThrow(() -> new VeicoloException("!exists_mot"));
@@ -55,8 +56,9 @@ public class MotoImplementation implements IMotoServices{
 	}
 
 	@Override
+	@Transactional (rollbackFor = VeicoloException.class)
 	public void update(MotoRequest req) throws VeicoloException {
-		log.debug("create {}", req);
+		log.debug("update moto {}", req);
 		
 		
 		Moto mot = repM.findById(req.getId()).orElseThrow(()-> 
@@ -69,7 +71,7 @@ public class MotoImplementation implements IMotoServices{
 
 	@Override
 	public List<MotoDTO> findAll() throws VeicoloException {
-		log.debug("findAll");
+		log.debug("findAll() moto");
 		List<Moto> lM = repM.findAll();
 		
 		return lM.stream()
@@ -79,7 +81,7 @@ public class MotoImplementation implements IMotoServices{
 
 	@Override
 	public MotoDTO findById(Integer id) throws VeicoloException {
-		log.debug("findById: {}", id);
+		log.debug("findById moto : {}", id);
 		Moto m = repM.findById(id)
 				.orElseThrow(() -> new VeicoloException("!exists_mot"));
 		
@@ -89,6 +91,7 @@ public class MotoImplementation implements IMotoServices{
 
 	@Override
 	public List<MotoDTO> filter(VeicoloFilter filter) {
+		log.debug("find con filtri moto : {}", filter);
 		Specification<Veicolo> spec = VeicoloSpecs.withFilter(filter);
 		
 		List<Veicolo> entities = repM.findAll(spec);
@@ -120,7 +123,7 @@ public class MotoImplementation implements IMotoServices{
     		Utils.validateTarga(m);
         }
         else
-            throw new VeicoloException("null_tar");
+            throw new VeicoloException("!null_tar");
 
         return m;
     }

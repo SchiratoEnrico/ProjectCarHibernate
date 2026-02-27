@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.car.dto.input.MarcaRequest;
 import com.betacom.car.dto.output.MarcaDTO;
@@ -23,6 +24,7 @@ public class MarcaImplementation implements IMarcaServices{
 	private final IMarcaRepository repM;
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void create(MarcaRequest req) throws VeicoloException {
 		log.debug("creating Marca {}", req);
 
@@ -41,6 +43,7 @@ public class MarcaImplementation implements IMarcaServices{
 	}
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("removing Marca with ID {}", id);
 
@@ -50,6 +53,7 @@ public class MarcaImplementation implements IMarcaServices{
 	}
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void update(MarcaRequest req) throws VeicoloException {
 		log.debug("modifying Marca {}", req);
 		Marca t = repM.findById(req.getId()).orElseThrow(() ->
@@ -72,6 +76,7 @@ public class MarcaImplementation implements IMarcaServices{
 
 	@Override
 	public List<MarcaDTO> list() {
+		log.debug("findAll() marche");
 		List<Marca> lM = repM.findAll();
 		return Utils.buildMarcaDTOs(lM);
 	}
