@@ -14,7 +14,6 @@ import com.betacom.car.models.Macchina;
 import com.betacom.car.models.Veicolo;
 import com.betacom.car.repositories.IMacchinaRepository;
 import com.betacom.car.services.interfaces.IMacchinaServices;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.specifications.VeicoloSpecs;
 import com.betacom.car.utilities.Utils;
 
@@ -28,7 +27,6 @@ public class MacchinaImplementation implements IMacchinaServices{
 
 	//autowired grazie a lombok
 	private final IMacchinaRepository repM;
-    private final IMessagesServices msgS;
     private final Utils utils;
 	
 	@Override
@@ -40,7 +38,7 @@ public class MacchinaImplementation implements IMacchinaServices{
         
         // controllo se targa presente
         if (repM.findByTarga(m.getTarga()).isPresent()) {
-        	throw new VeicoloException(msgS.get("exists_tar"));
+        	throw new VeicoloException("exists_tar");
     	}
         
         int id = repM.save(m).getId();
@@ -54,7 +52,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("delete macchina con id: {}", id);
 
         Macchina m = repM.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
+                .orElseThrow(() -> new VeicoloException("!exists_mac"));
 
         repM.delete(m);
 		
@@ -65,7 +63,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("update {}", req);
 				
         Macchina m = repM.findById(req.getId())
-                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
+                .orElseThrow(() -> new VeicoloException("!exists_mac"));
         
         m = optReqMacc(req, m);
        
@@ -87,7 +85,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 		log.debug("findById: {}", id);
 
         Macchina m = repM.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
+                .orElseThrow(() -> new VeicoloException("!exists_mac"));
 
         return Utils.buildMacchinaDTO(m);
 	}
@@ -115,19 +113,19 @@ public class MacchinaImplementation implements IMacchinaServices{
 	        if (req.getCc() != null)
 	            m.setCc(req.getCc());
 	        else
-	            throw new VeicoloException(msgS.get("null_ccc"));
+	            throw new VeicoloException("null_ccc");
 
 	        if (req.getNumeroPorte() != null)
 	            m.setNumeroPorte(req.getNumeroPorte());
 	        else
-	            throw new VeicoloException(msgS.get("null_por"));
+	            throw new VeicoloException("null_por");
 
 	        if (req.getTarga() != null && !req.getTarga().isBlank()) {
 	            m.setTarga(req.getTarga().trim().toUpperCase());
 	            Utils.validateTarga(m);
 	        } 
 	        else
-	            throw new VeicoloException(msgS.get("null_tar"));
+	            throw new VeicoloException("null_tar");
 
 	        return m;
 	    }

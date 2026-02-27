@@ -13,7 +13,6 @@ import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Moto;
 import com.betacom.car.models.Veicolo;
 import com.betacom.car.repositories.IMotoRepository;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.specifications.VeicoloSpecs;
 import com.betacom.car.utilities.Utils;
@@ -27,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MotoImplementation implements IMotoServices{
 
 	private final Utils utils;
-	private final IMessagesServices msgS;
 	private final IMotoRepository repM;
 	
 	@Transactional (rollbackFor = VeicoloException.class)
@@ -40,7 +38,7 @@ public class MotoImplementation implements IMotoServices{
 		mot = checkReqMoto(req, mot);
 		
 		if (repM.findByTarga(mot.getTarga()).isPresent())
-            throw new VeicoloException(msgS.get("exists_tar"));
+            throw new VeicoloException("exists_tar");
 		
 		int id = repM.save(mot).getId();
 		return id;
@@ -51,7 +49,7 @@ public class MotoImplementation implements IMotoServices{
 		log.debug("delete {}", id);
 		
 		Moto mot = repM.findById(id)
-				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_mot")));
+				.orElseThrow(() -> new VeicoloException("!exists_mot"));
 		
 		repM.delete(mot);
 	}
@@ -61,7 +59,8 @@ public class MotoImplementation implements IMotoServices{
 		log.debug("create {}", req);
 		
 		
-		Moto mot = repM.findById(req.getId()).orElseThrow(()-> new VeicoloException(msgS.get("!exists_mot")));
+		Moto mot = repM.findById(req.getId()).orElseThrow(()-> 
+								new VeicoloException("!exists_mot"));
 		
 		mot = optReqMoto(req, mot);
 		
@@ -82,7 +81,7 @@ public class MotoImplementation implements IMotoServices{
 	public MotoDTO findById(Integer id) throws VeicoloException {
 		log.debug("findById: {}", id);
 		Moto m = repM.findById(id)
-				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_mot")));
+				.orElseThrow(() -> new VeicoloException("!exists_mot"));
 		
 		return Utils.buildMotoDTO(m);
 	}
@@ -109,19 +108,19 @@ public class MotoImplementation implements IMotoServices{
         if (req.getCc() != null)
             m.setCc(req.getCc());
         else
-            throw new VeicoloException(msgS.get("null_ccc"));
+            throw new VeicoloException("null_ccc");
 
         if (req.getNumeroMarce() != null)
             m.setNumeroMarce(req.getNumeroMarce());
         else
-            throw new VeicoloException(msgS.get("null_mar"));
+            throw new VeicoloException("null_mar");
 
         if (req.getTarga() != null && !req.getTarga().isBlank()) {
             m.setTarga(req.getTarga().trim().toUpperCase());
     		Utils.validateTarga(m);
         }
         else
-            throw new VeicoloException(msgS.get("null_tar"));
+            throw new VeicoloException("null_tar");
 
         return m;
     }

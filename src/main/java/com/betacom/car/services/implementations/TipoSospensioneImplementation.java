@@ -10,7 +10,6 @@ import com.betacom.car.dto.output.TipoSospensioneDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.TipoSospensione;
 import com.betacom.car.repositories.ITipoSospensioneRepository;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.ITipoSospensioneServices;
 import com.betacom.car.utilities.Utils;
 
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class TipoSospensioneImplementation implements ITipoSospensioneServices{
-	private final IMessagesServices msgS;
 	private final ITipoSospensioneRepository repT;
 
 	@Override
@@ -47,7 +45,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete TipoSospensione with ID {}", id);
 		TipoSospensione t = repT.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("!exists_sos")));
+							new VeicoloException("!exists_sos"));
 		repT.delete(t);
 	}
 
@@ -55,7 +53,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	public void update(TipoSospensioneRequest req) throws VeicoloException {
 		log.debug("modifying TipoSospensione {}", req);
 		TipoSospensione c = repT.findById(req.getId()).orElseThrow(() ->
-							new VeicoloException(msgS.get("!exists_sos")));
+							new VeicoloException("!exists_sos"));
 		
 		if ((req.getTipoSospensione() == null) && (req.getTipoSospensione().isBlank())) {
 			throw new VeicoloException("null_cat");

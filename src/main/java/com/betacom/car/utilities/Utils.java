@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.betacom.car.dto.filters.VeicoloFilter;
-import com.betacom.car.dto.input.MacchinaRequest;
-import com.betacom.car.dto.input.MotoRequest;
 import com.betacom.car.dto.input.VeicoloRequest;
 import com.betacom.car.dto.output.BiciclettaDTO;
 import com.betacom.car.dto.output.CategoriaDTO;
@@ -39,7 +37,6 @@ import com.betacom.car.repositories.IColoreRepository;
 import com.betacom.car.repositories.IMarcaRepository;
 import com.betacom.car.repositories.ITipoAlimentazioneRepository;
 import com.betacom.car.repositories.ITipoVeicoloRepository;
-import com.betacom.car.services.interfaces.IMessagesServices;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +48,6 @@ public class Utils {
 
 	private final IColoreRepository repCol;
 	private final IMarcaRepository repMar;
-	private final IMessagesServices msgS;
 	private final ITipoAlimentazioneRepository repAli;
 	private final ITipoVeicoloRepository repVei;
 	private final ICategoriaRepository repCat;
@@ -61,58 +57,58 @@ public class Utils {
 		if (req.getColore() != null && (!req.getColore().isBlank())) {
 			String c = req.getColore().trim().toUpperCase();
 			Colore col = repCol.findByColore(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_col")));
+								new VeicoloException("!exists_col"));
 			v.setColore(col);
 		} else {
-			throw new VeicoloException(msgS.get("null_col"));
+			throw new VeicoloException("null_col");
 		}
 
 		if (req.getMarca() != null && (!req.getMarca().isBlank())) {
 			String m = req.getMarca().trim().toUpperCase();
 			Marca mar = repMar.findByMarca(m).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_mar")));
+								new VeicoloException("!exists_mar"));
 			v.setMarca(mar);
 		} else {
-			throw new VeicoloException(msgS.get("null_mar"));
+			throw new VeicoloException("null_mar");
 		}
 
 		if (req.getAlimentazione() != null && (!req.getAlimentazione().isBlank())) {
 			String t = req.getAlimentazione().trim().toUpperCase();
 			TipoAlimentazione tA = repAli.findByTipoAlimentazione(t).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_mar")));
+								new VeicoloException("!exists_mar"));
 			v.setTipoAlimentazione(tA);
 		} else {
-			throw new VeicoloException(msgS.get("null_ali"));
+			throw new VeicoloException("null_ali");
 		}
 		
 		if (req.getCategoria() != null && (!req.getCategoria().isBlank())) {
 			String c = req.getCategoria().trim().toUpperCase();
 			Categoria cat = repCat.findByCategoria(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_mar")));
+								new VeicoloException("!exists_mar"));
 			v.setCategoria(cat);
 		} else {
-			throw new VeicoloException(msgS.get("null_cat"));
+			throw new VeicoloException("null_cat");
 		}
 		
 		if (req.getTipoVeicolo() != null && (!req.getTipoVeicolo().isBlank())) {
 			String c = req.getTipoVeicolo().trim().toUpperCase();
 			TipoVeicolo tV = repVei.findByTipoVeicolo(c).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_vei")));
+								new VeicoloException("!exists_vei"));
 			v.setTipoVeicolo(tV);
 		} else {
-			throw new VeicoloException(msgS.get("null_vei"));
+			throw new VeicoloException("null_vei");
 		}
 				
 		if (req.getAnnoProduzione() != null) {
 			v.setAnnoProduzione(req.getAnnoProduzione());
 		} else {
-			throw new VeicoloException(msgS.get("null_ann"));
+			throw new VeicoloException("null_ann");
 		}
 		
 		if (req.getNumeroRuote() != null ) {
 			v.setNumeroRuote(req.getNumeroRuote());
 		} else {
-			throw new VeicoloException(msgS.get("null_ruo"));
+			throw new VeicoloException("null_ruo");
 		}
 
 		v.setModello(req.getModello());
@@ -336,15 +332,15 @@ public class Utils {
         
         // Bici incompatibile con campi motorizzati
         if(hasBici && hasMotoMacchina) 
-            throw new VeicoloException(msgS.get("!exists_fil"));
+            throw new VeicoloException("!exists_fil");
 
         
         if(hasBici && hasMacchina)
-        	throw new VeicoloException(msgS.get("!exists_fil"));
+        	throw new VeicoloException("!exists_fil");
 
         // Moto vs Macchina
         if(hasMoto && hasMacchina)
-            throw new VeicoloException(msgS.get("!exists_fil"));
+            throw new VeicoloException("!exists_fil");
 
     }
 	

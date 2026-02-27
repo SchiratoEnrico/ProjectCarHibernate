@@ -11,7 +11,6 @@ import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Marca;
 import com.betacom.car.repositories.IMarcaRepository;
 import com.betacom.car.services.interfaces.IMarcaServices;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class MarcaImplementation implements IMarcaServices{
-	private final IMessagesServices msgS;
 	private final IMarcaRepository repM;
 
 	@Override
@@ -47,7 +45,7 @@ public class MarcaImplementation implements IMarcaServices{
 		log.debug("removing Marca with ID {}", id);
 
 		Marca t = repM.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("!exists_mar")));
+							new VeicoloException("!exists_mar"));
 		repM.delete(t);		
 	}
 
@@ -55,7 +53,7 @@ public class MarcaImplementation implements IMarcaServices{
 	public void update(MarcaRequest req) throws VeicoloException {
 		log.debug("modifying Marca {}", req);
 		Marca t = repM.findById(req.getId()).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_mar")));
+								new VeicoloException("!exists_mar"));
 
 		if ((req.getMarca() == null) && (req.getMarca().isBlank())) {
 			throw new VeicoloException("null_mar");

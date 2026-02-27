@@ -11,7 +11,6 @@ import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Colore;
 import com.betacom.car.repositories.IColoreRepository;
 import com.betacom.car.services.interfaces.IColoreServices;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -23,18 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 public class ColoreImplementation implements IColoreServices{
 
 	private final IColoreRepository repC;
-	private final IMessagesServices msgS;
 	
 	@Override
 	public void create(ColoreRequest req) throws VeicoloException {
 		log.debug("create {}", req);
 
         if (req.getColore() == null || req.getColore().isBlank())
-            throw new VeicoloException(msgS.get("null_col"));
+            throw new VeicoloException("null_col");
 
         String myC = req.getColore().trim().toUpperCase();
         if (repC.findByColore(myC).isPresent())
-            throw new VeicoloException(msgS.get("exists_col"));
+            throw new VeicoloException("exists_col");
 
         Colore c = new Colore();
         c.setColore(myC);
@@ -47,7 +45,7 @@ public class ColoreImplementation implements IColoreServices{
 		log.debug("delete colore con id: {}", id);
 
 		Colore c = repC.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")));
+                .orElseThrow(() -> new VeicoloException("!exists_col"));
 
         repC.delete(c);
 		
@@ -68,7 +66,7 @@ public class ColoreImplementation implements IColoreServices{
 		 log.debug("colore update {}", req);
 
 		Colore c = repC.findById(req.getId())
-                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")));
+                .orElseThrow(() -> new VeicoloException("!exists_col"));
 		
 		if ((req.getColore() == null) && (req.getColore().isBlank())) {
 			throw new VeicoloException("null_col");

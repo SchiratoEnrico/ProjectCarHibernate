@@ -10,7 +10,6 @@ import com.betacom.car.dto.output.TipoVeicoloDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.TipoVeicolo;
 import com.betacom.car.repositories.ITipoVeicoloRepository;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.ITipoVeicoloServices;
 import com.betacom.car.utilities.Utils;
 
@@ -21,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class TipoVeicoloImplementation implements ITipoVeicoloServices{
-	private final IMessagesServices msgS;
 	private final ITipoVeicoloRepository repT;
 	
 	@Override
@@ -47,7 +45,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 		log.debug("removing TipoVeicolo with ID {}", id);
 
 		TipoVeicolo t = repT.findById(id).orElseThrow(() ->
-							new VeicoloException(msgS.get("!exists_vei")));
+							new VeicoloException("!exists_vei"));
 		repT.delete(t);
 		
 	}
@@ -56,7 +54,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 	public void update(TipoVeicoloRequest req) throws VeicoloException {
 		log.debug("modifying TipoVeicolo {}", req);
 		TipoVeicolo t = repT.findById(req.getId()).orElseThrow(() ->
-								new VeicoloException(msgS.get("!exists_vei")));
+								new VeicoloException("!exists_vei"));
 
 		if ((req.getTipoVeicolo() == null) && (req.getTipoVeicolo().isBlank())) {
 			throw new VeicoloException("null_cat");

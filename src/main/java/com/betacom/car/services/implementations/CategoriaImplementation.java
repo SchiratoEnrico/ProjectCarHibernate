@@ -11,7 +11,6 @@ import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Categoria;
 import com.betacom.car.repositories.ICategoriaRepository;
 import com.betacom.car.services.interfaces.ICategoriaServices;
-import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.utilities.Utils;
 
 import lombok.RequiredArgsConstructor;
@@ -23,18 +22,17 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoriaImplementation implements ICategoriaServices{
 
 	private final ICategoriaRepository repC;
-	private final IMessagesServices msgS;
 	
 	@Override
 	public void create(CategoriaRequest req) throws VeicoloException {
-		log.debug("create {}", req);
+		log.debug("create categoria: {}", req);
 
         if (req.getCategoria() == null || req.getCategoria().isBlank())
-            throw new VeicoloException(msgS.get("null_cat"));
+            throw new VeicoloException("null_cat");
 
         String cat = req.getCategoria().trim().toUpperCase();
         if (repC.findByCategoria(cat).isPresent())
-            throw new VeicoloException(msgS.get("exists_cat"));
+            throw new VeicoloException("exists_cat");
 
         Categoria c = new Categoria();
         c.setCategoria(cat);
@@ -45,10 +43,10 @@ public class CategoriaImplementation implements ICategoriaServices{
 
 	@Override
 	public void delete(Integer id) throws VeicoloException {
-		log.debug("delete categoria con id: {}", id);
+		log.debug("delete categoria, id: {}", id);
 
         Categoria c = repC.findById(id)
-                .orElseThrow(() -> new VeicoloException(msgS.get("null_cat_id")));
+                .orElseThrow(() -> new VeicoloException("null_cat_id"));
 
         repC.delete(c);
 		
@@ -56,8 +54,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 
 	@Override
 	public List<CategoriaDTO> list() {
-		 log.debug("list()");
-
+		log.debug("list categoria");
 	        return repC.findAll()
 	                .stream()
 	                .map(Utils::buildCategoriaDTO)
@@ -69,7 +66,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 	public void update(CategoriaRequest req) throws VeicoloException {
 		log.debug("update Categoria {}", req);
 		Categoria c = repC.findById(req.getId())
-				.orElseThrow(() -> new VeicoloException(msgS.get("null_cat_id")));
+				.orElseThrow(() -> new VeicoloException("null_cat_id"));
 
 		if ((req.getCategoria() == null) && (req.getCategoria().isBlank())) {
 			throw new VeicoloException("null_cat");
