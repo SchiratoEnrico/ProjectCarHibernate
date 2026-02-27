@@ -25,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class VeicoloImplementation implements IVeicoloServices<VeicoloDTO, Integer, VeicoloFilter>{
 	private final IVeicoloRepository repV;
 	private final ObjectDTOMapper myMapper;
-	private final Utils util;
 
 	@Override
 	public List<VeicoloDTO> findAll() throws VeicoloException {
@@ -48,7 +47,7 @@ public class VeicoloImplementation implements IVeicoloServices<VeicoloDTO, Integ
 	public List<VeicoloDTO> filter(VeicoloFilter filter) {
 		log.debug("filter vehicles, filter: {}", filter);
 
-		util.validateFilter(filter);
+		Utils.validateFilter(filter);
 		
 		//faccio le specification col filter
 		Specification<Veicolo> spec = VeicoloSpecs.withFilter(filter);

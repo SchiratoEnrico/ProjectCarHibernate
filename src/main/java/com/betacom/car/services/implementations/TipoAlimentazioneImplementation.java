@@ -13,6 +13,7 @@ import com.betacom.car.repositories.ITipoAlimentazioneRepository;
 import com.betacom.car.services.interfaces.ITipoAlimentazioneServices;
 import com.betacom.car.utilities.Utils;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 	private final ITipoAlimentazioneRepository repTA;
 	
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void create(TipoAlimentazioneRequest req) throws VeicoloException {
 		log.debug("create {}", req);
 		
@@ -39,6 +41,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete tipo alimentazione con id: {}", id);
 
@@ -59,6 +62,7 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void update(TipoAlimentazioneRequest req) throws VeicoloException {
 		log.debug("update Categoria {}", req);
 		TipoAlimentazione tA = repTA.findById(req.getId())

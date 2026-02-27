@@ -13,6 +13,7 @@ import com.betacom.car.repositories.ITipoSospensioneRepository;
 import com.betacom.car.services.interfaces.ITipoSospensioneServices;
 import com.betacom.car.utilities.Utils;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +24,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	private final ITipoSospensioneRepository repT;
 
 	@Override
+    @Transactional (rollbackFor = Exception.class)
 	public void create(TipoSospensioneRequest req) throws VeicoloException {
 		log.debug("creating TipoSospensione {}", req);
 
@@ -42,6 +44,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete TipoSospensione with ID {}", id);
 		TipoSospensione t = repT.findById(id).orElseThrow(() ->
@@ -50,6 +53,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void update(TipoSospensioneRequest req) throws VeicoloException {
 		log.debug("modifying TipoSospensione {}", req);
 		TipoSospensione c = repT.findById(req.getId()).orElseThrow(() ->
@@ -71,6 +75,7 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 
 	@Override
 	public List<TipoSospensioneDTO> list() {
+		log.debug("list TipoSospensione");
 		List<TipoSospensione> lS = repT.findAll();
 		return Utils.buildTipoSospensioneDTOs(lS);
 	}

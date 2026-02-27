@@ -13,6 +13,7 @@ import com.betacom.car.repositories.ITipoVeicoloRepository;
 import com.betacom.car.services.interfaces.ITipoVeicoloServices;
 import com.betacom.car.utilities.Utils;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,6 +24,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 	private final ITipoVeicoloRepository repT;
 	
 	@Override
+    @Transactional (rollbackFor = Exception.class)
 	public void create(TipoVeicoloRequest req) throws VeicoloException {
 		log.debug("creating TipoVeicolo {}", req);
 
@@ -41,6 +43,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("removing TipoVeicolo with ID {}", id);
 
@@ -51,6 +54,7 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor = Exception.class)
 	public void update(TipoVeicoloRequest req) throws VeicoloException {
 		log.debug("modifying TipoVeicolo {}", req);
 		TipoVeicolo t = repT.findById(req.getId()).orElseThrow(() ->
@@ -72,6 +76,8 @@ public class TipoVeicoloImplementation implements ITipoVeicoloServices{
 
 	@Override
 	public List<TipoVeicoloDTO> list() {
+		log.debug("list TipoVeicolo");
+
 		List<TipoVeicolo> lT = repT.findAll();
 		return Utils.buildTipoVeicoloDTOs(lT);
 	}

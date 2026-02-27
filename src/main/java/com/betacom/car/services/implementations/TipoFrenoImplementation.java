@@ -12,6 +12,7 @@ import com.betacom.car.models.TipoFreno;
 import com.betacom.car.repositories.ITipoFrenoRepository;
 import com.betacom.car.services.interfaces.ITipoFrenoServices;
 
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +24,9 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 	private final ITipoFrenoRepository repTA;
 	
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void create(TipoFrenoRequest req) throws VeicoloException {
-		log.debug("create {}", req);
+		log.debug("create TipoFreno: {}", req);
 		
 		if(req.getTipoFreno() == null || req.getTipoFreno().isBlank())
 			throw new VeicoloException("null_fre");
@@ -38,6 +40,7 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete tipo Freno con id: {}", id);
 
@@ -49,7 +52,7 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 
 	@Override
 	public List<TipoFrenoDTO> list() {
-		log.debug("list()");
+		log.debug("list");
 
         return repTA.findAll()
                 .stream()
@@ -61,7 +64,10 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 	}
 
 	@Override
+    @Transactional (rollbackFor= Exception.class)
 	public void update(TipoFrenoRequest req) throws VeicoloException {
+		log.debug("update TipoFreno: {}", req);
+
 		TipoFreno t = repTA.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException("!exists_fre"));
 		
