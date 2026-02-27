@@ -66,16 +66,18 @@ public class TipoAlimentazioneImplementation implements ITipoAlimentazioneServic
 		TipoAlimentazione tA = repTA.findById(req.getId())
 				.orElseThrow(() -> new VeicoloException(msgS.get("!exists_ali")));
 
-		if ((req.getTipoAlimentazione() != null) && (!req.getTipoAlimentazione().isBlank())) {
-			String myT = req.getTipoAlimentazione().trim().toUpperCase();
-			Optional<TipoAlimentazione> t = repTA.findByTipoAlimentazione(myT);
-			if (t.isEmpty()) {
-				tA.setTipoAlimentazione(myT);
-				repTA.save(tA);			}
-			else {
-				throw new VeicoloException("exists_ali");
-			}
+		if ((req.getTipoAlimentazione() == null) && (req.getTipoAlimentazione().isBlank())) {
+			throw new VeicoloException("null_ali");
+		}
+		
+		String myT = req.getTipoAlimentazione().trim().toUpperCase();
+		Optional<TipoAlimentazione> t = repTA.findByTipoAlimentazione(myT);
+		if (t.isEmpty()) {
+			tA.setTipoAlimentazione(myT);
+			repTA.save(tA);			
+		}
+		else {
+			throw new VeicoloException("exists_ali");
 		}
 	}
-
 }

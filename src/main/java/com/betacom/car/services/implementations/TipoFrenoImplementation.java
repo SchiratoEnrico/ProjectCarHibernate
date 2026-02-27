@@ -66,17 +66,18 @@ public class TipoFrenoImplementation implements ITipoFrenoServices{
 	public void update(TipoFrenoRequest req) throws VeicoloException {
 		TipoFreno t = repTA.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("!exists_fre")));
-		if ((req.getTipoFreno()) != null && (!req.getTipoFreno().isEmpty())) {
-			String myT = req.getTipoFreno().trim().toUpperCase();
-			Optional<TipoFreno> t2 = repTA.findByTipoFreno(myT);
-			if (t2.isEmpty()) {
-				t.setTipoFreno(myT);
-				repTA.save(t);
-			} else {
-				throw new VeicoloException(msgS.get("exists_fre"));
-			}
-		} else {
-			throw new VeicoloException(msgS.get("null_fre"));
+		
+		if ((req.getTipoFreno() == null) && (req.getTipoFreno().isBlank())) {
+			throw new VeicoloException("null_fre");
+		}
+		String myT = req.getTipoFreno().trim().toUpperCase();
+		Optional<TipoFreno> t2 = repTA.findByTipoFreno(myT);
+		if (t2.isEmpty()) {
+			t.setTipoFreno(myT);
+			repTA.save(t);			
+		}
+		else {
+			throw new VeicoloException("exists_fre");
 		}
 	}
 }

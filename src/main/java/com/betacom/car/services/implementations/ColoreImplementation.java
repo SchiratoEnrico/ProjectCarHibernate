@@ -69,19 +69,18 @@ public class ColoreImplementation implements IColoreServices{
 
 		Colore c = repC.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")));
-		if ((req.getColore() != null) && (!req.getColore().isEmpty())) {
-			String myC = req.getColore().trim().toUpperCase();
-			Optional<Colore> c2 = repC.findByColore(myC);
-			if (c2.isEmpty()) {
-				c.setColore(myC);
-				repC.save(c);
-			} else {
-				throw new VeicoloException(msgS.get("exists_col"));
-			}
-		} else {
-			throw new VeicoloException(msgS.get("null_col"));
+		
+		if ((req.getColore() == null) && (req.getColore().isBlank())) {
+			throw new VeicoloException("null_col");
 		}
-        repC.save(c);	
+		String myT = req.getColore().trim().toUpperCase();
+		Optional<Colore> t = repC.findByColore(myT);
+		if (t.isEmpty()) {
+			c.setColore(myT);
+			repC.save(c);			
+		}
+		else {
+			throw new VeicoloException("exists_col");
+		}
 	}
-
 }

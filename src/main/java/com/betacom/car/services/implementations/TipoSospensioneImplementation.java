@@ -54,18 +54,20 @@ public class TipoSospensioneImplementation implements ITipoSospensioneServices{
 	@Override
 	public void update(TipoSospensioneRequest req) throws VeicoloException {
 		log.debug("modifying TipoSospensione {}", req);
-		TipoSospensione t = repT.findById(req.getId()).orElseThrow(() ->
+		TipoSospensione c = repT.findById(req.getId()).orElseThrow(() ->
 							new VeicoloException(msgS.get("!exists_sos")));
 		
-		if ((req.getTipoSospensione() != null) && (!req.getTipoSospensione().isBlank())) {
-			String myT = req.getTipoSospensione().trim().toUpperCase();
-			Optional<TipoSospensione> t2 = repT.findByTipoSospensione(myT);
-			if (t2.isEmpty()) {
-				t.setTipoSospensione(myT);
-				repT.save(t);			} 
-			else {
-				throw new VeicoloException("exists_sos");
-			}
+		if ((req.getTipoSospensione() == null) && (req.getTipoSospensione().isBlank())) {
+			throw new VeicoloException("null_cat");
+		}
+		String myT = req.getTipoSospensione().trim().toUpperCase();
+		Optional<TipoSospensione> t = repT.findByTipoSospensione(myT);
+		if (t.isEmpty()) {
+			c.setTipoSospensione(myT);
+			repT.save(c);			
+		}
+		else {
+			throw new VeicoloException("exists_cat");
 		}
 	}
 

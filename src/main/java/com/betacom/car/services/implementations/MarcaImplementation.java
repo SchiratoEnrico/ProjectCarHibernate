@@ -9,7 +9,6 @@ import com.betacom.car.dto.input.MarcaRequest;
 import com.betacom.car.dto.output.MarcaDTO;
 import com.betacom.car.exceptions.VeicoloException;
 import com.betacom.car.models.Marca;
-import com.betacom.car.models.TipoVeicolo;
 import com.betacom.car.repositories.IMarcaRepository;
 import com.betacom.car.services.interfaces.IMarcaServices;
 import com.betacom.car.services.interfaces.IMessagesServices;
@@ -58,16 +57,18 @@ public class MarcaImplementation implements IMarcaServices{
 		Marca t = repM.findById(req.getId()).orElseThrow(() ->
 								new VeicoloException(msgS.get("!exists_mar")));
 
-		
-		if ((req.getMarca() != null) && (!req.getMarca().isBlank())) {
-			String myT = req.getMarca().trim().toUpperCase();
-			Optional<Marca> t2 = repM.findByMarca(myT);
-			if (t2.isEmpty()) {
-				t.setMarca(myT);
-				repM.save(t);			}
-			else {
-				throw new VeicoloException("exists_mar");
-			}
+		if ((req.getMarca() == null) && (req.getMarca().isBlank())) {
+			throw new VeicoloException("null_mar");
+		}
+
+		String myT = req.getMarca().trim().toUpperCase();
+		Optional<Marca> t2 = repM.findByMarca(myT);
+		if (t2.isEmpty()) {
+			t.setMarca(myT);
+			repM.save(t);			
+		}
+		else {
+			throw new VeicoloException("exists_mar");
 		}
 	}
 

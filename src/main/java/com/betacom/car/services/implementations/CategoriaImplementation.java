@@ -71,15 +71,17 @@ public class CategoriaImplementation implements ICategoriaServices{
 		Categoria c = repC.findById(req.getId())
 				.orElseThrow(() -> new VeicoloException(msgS.get("null_cat_id")));
 
-		if ((req.getCategoria() != null) && (!req.getCategoria().isBlank())) {
-			String myT = req.getCategoria().trim().toUpperCase();
-			Optional<Categoria> t = repC.findByCategoria(myT);
-			if (t.isEmpty()) {
-				c.setCategoria(myT);
-				repC.save(c);			}
-			else {
-				throw new VeicoloException("null_cat");
-			}
+		if ((req.getCategoria() == null) && (req.getCategoria().isBlank())) {
+			throw new VeicoloException("null_cat");
+		}
+		String myT = req.getCategoria().trim().toUpperCase();
+		Optional<Categoria> t = repC.findByCategoria(myT);
+		if (t.isEmpty()) {
+			c.setCategoria(myT);
+			repC.save(c);			
+		}
+		else {
+			throw new VeicoloException("exists_cat");
 		}
 	}
 
