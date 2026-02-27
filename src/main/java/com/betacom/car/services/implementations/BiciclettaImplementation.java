@@ -38,6 +38,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	@Override
 	@Transactional (rollbackFor = Exception.class)
 	public Integer create(BiciRequest req) throws VeicoloException {
+		
 		log.debug("creating Bicicletta {}", req);
 
 		Bicicletta b = checkReq(req);
@@ -49,6 +50,7 @@ public class BiciclettaImplementation implements IBiciclettaServices{
 	@Override
 	@Transactional (rollbackFor = Exception.class)
 	public void delete(Integer id) throws VeicoloException {
+		
 		log.debug("removing Bicicletta with ID {}", id);
 
 		Bicicletta b = repB.findById(id).orElseThrow(() ->

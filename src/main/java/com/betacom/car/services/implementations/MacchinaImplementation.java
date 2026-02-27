@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.MacchinaRequest;
@@ -30,8 +31,9 @@ public class MacchinaImplementation implements IMacchinaServices{
     private final Utils utils;
 	
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public Integer create(MacchinaRequest req) throws VeicoloException {
-		log.debug("create {}", req);
+		log.debug("create macchina {}", req);
 				
         Macchina m = new Macchina();
         m = checkReqMacc(req, m);
@@ -48,6 +50,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 	
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete macchina con id: {}", id);
 
@@ -59,8 +62,9 @@ public class MacchinaImplementation implements IMacchinaServices{
 	}
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void update(MacchinaRequest req) throws VeicoloException {
-		log.debug("update {}", req);
+		log.debug("update macchina {}", req);
 				
         Macchina m = repM.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException("!exists_mac"));
@@ -72,7 +76,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 	
 	@Override
 	public List<MacchinaDTO> findAll() throws VeicoloException {
-		log.debug("findAll()");
+		log.debug("findAll() macchina");
 
         return repM.findAll()
                 .stream()
@@ -82,7 +86,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 
 	@Override
 	public MacchinaDTO findById(Integer id) throws VeicoloException {
-		log.debug("findById: {}", id);
+		log.debug("findById macchina : {}", id);
 
         Macchina m = repM.findById(id)
                 .orElseThrow(() -> new VeicoloException("!exists_mac"));
@@ -92,7 +96,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 
 	@Override
 	public List<MacchinaDTO> filter(VeicoloFilter filter) {
-		
+		log.debug("Find macchine con filtri {}", filter);
 		//faccio le specification col filter
 		Specification<Veicolo> spec = VeicoloSpecs.withFilter(filter);
 		

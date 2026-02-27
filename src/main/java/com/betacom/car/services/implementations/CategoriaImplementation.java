@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.car.dto.input.CategoriaRequest;
 import com.betacom.car.dto.output.CategoriaDTO;
@@ -24,6 +25,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 	private final ICategoriaRepository repC;
 	
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void create(CategoriaRequest req) throws VeicoloException {
 		log.debug("create categoria: {}", req);
 
@@ -42,6 +44,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 		
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete categoria, id: {}", id);
 
@@ -54,7 +57,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 
 	@Override
 	public List<CategoriaDTO> list() {
-		log.debug("list categoria");
+		log.debug("list all categoria");
 	        return repC.findAll()
 	                .stream()
 	                .map(Utils::buildCategoriaDTO)
@@ -63,6 +66,7 @@ public class CategoriaImplementation implements ICategoriaServices{
 
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void update(CategoriaRequest req) throws VeicoloException {
 		log.debug("update Categoria {}", req);
 		Categoria c = repC.findById(req.getId())

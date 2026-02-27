@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.car.dto.input.ColoreRequest;
 import com.betacom.car.dto.output.ColoreDTO;
@@ -24,6 +25,7 @@ public class ColoreImplementation implements IColoreServices{
 	private final IColoreRepository repC;
 	
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void create(ColoreRequest req) throws VeicoloException {
 		log.debug("create {}", req);
 
@@ -41,6 +43,7 @@ public class ColoreImplementation implements IColoreServices{
 		
 
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void delete(Integer id) throws VeicoloException {
 		log.debug("delete colore con id: {}", id);
 
@@ -60,8 +63,9 @@ public class ColoreImplementation implements IColoreServices{
 	                .map(c -> Utils.buildColoreDTO(c))
 	                .toList();
 	}
-
+	
 	@Override
+	@Transactional (rollbackFor = Exception.class)
 	public void update(ColoreRequest req) throws VeicoloException {
 		 log.debug("colore update {}", req);
 
