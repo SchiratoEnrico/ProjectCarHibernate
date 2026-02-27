@@ -35,7 +35,7 @@ public class ColoreController {
         try {
             r = coloreS.list();
         } catch (VeicoloException e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -50,7 +50,7 @@ public class ColoreController {
             coloreS.create(req);
             r.setMsg(msgS.get("rest_created"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -66,7 +66,7 @@ public class ColoreController {
             coloreS.delete(id);
             r.setMsg(msgS.get("rest_deleted"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -81,7 +81,7 @@ public class ColoreController {
         	coloreS.update(req);
             r.setMsg(msgS.get("rest_updated"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);

@@ -11,6 +11,7 @@ import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.VeicoloFilterRequest;
 import com.betacom.car.dto.output.VeicoloDTO;
 import com.betacom.car.exceptions.VeicoloException;
+import com.betacom.car.services.interfaces.IMessagesServices;
 import com.betacom.car.services.interfaces.IVeicoloServices;
 import com.betacom.car.utilities.FilterTranslator;
 import com.betacom.car.utilities.Utils;
@@ -24,6 +25,7 @@ public class VeicoloController {
 	
 	private final IVeicoloServices<VeicoloDTO, Integer, VeicoloFilter> veiS;
 	private final FilterTranslator filT;
+	private final IMessagesServices msgS;
 	
 	@GetMapping ("/list")
 	private ResponseEntity<Object> list(){
@@ -32,7 +34,7 @@ public class VeicoloController {
 		try {
             r = veiS.findAll();
         } catch (VeicoloException e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -46,7 +48,7 @@ public class VeicoloController {
         try {
             r = veiS.findById(id);
         } catch (Exception e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -100,7 +102,7 @@ public class VeicoloController {
 	        r = veiS.filter(f);
 	    	
 	    } catch (VeicoloException e) {
-	        r = e.getMessage();
+	        r = msgS.get(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;
 	    }
 	    return ResponseEntity.status(status).body(r);

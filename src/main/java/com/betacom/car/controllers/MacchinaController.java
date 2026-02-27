@@ -43,7 +43,7 @@ public class MacchinaController {
             Integer id = macchinaS.create(req);
             r.setMsg(msgS.get("rest_created") + " con id: " + id);
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -59,7 +59,7 @@ public class MacchinaController {
             macchinaS.delete(id);
             r.setMsg(msgS.get("rest_deleted"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -74,7 +74,7 @@ public class MacchinaController {
             macchinaS.update(req);
             r.setMsg(msgS.get("rest_updated"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -88,7 +88,7 @@ public class MacchinaController {
 		try {
             r = macchinaS.findAll();
         } catch (VeicoloException e) {
-            r = e.getMessage();
+        	r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -102,7 +102,7 @@ public class MacchinaController {
         try {
             r = macchinaS.findById(id);
         } catch (Exception e) {
-            r = e.getMessage();
+        	r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -144,7 +144,6 @@ public class MacchinaController {
 	        r = macchinaS.filter(filter);
 	    
 	    } catch (VeicoloException e) {
-	        r = e.getMessage();
 	        r = msgS.get(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;
 	    }

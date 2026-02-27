@@ -36,7 +36,7 @@ public class CategoriaController {
         try {
             r = categoriaS.list();
         } catch (VeicoloException e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -51,7 +51,7 @@ public class CategoriaController {
             categoriaS.create(req);
             r.setMsg(msgS.get("rest_created"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -67,7 +67,7 @@ public class CategoriaController {
             categoriaS.delete(id);
             r.setMsg(msgS.get("rest_deleted"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -82,7 +82,7 @@ public class CategoriaController {
         	categoriaS.update(req);
             r.setMsg(msgS.get("rest_updated"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+            r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);

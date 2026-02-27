@@ -12,7 +12,6 @@ import com.betacom.car.repositories.ITipoAlimentazioneRepository;
 import com.betacom.car.repositories.ITipoFrenoRepository;
 import com.betacom.car.repositories.ITipoSospensioneRepository;
 import com.betacom.car.repositories.ITipoVeicoloRepository;
-import com.betacom.car.services.interfaces.IMessagesServices;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,7 +26,6 @@ public  class FilterTranslator {
 	private final ITipoFrenoRepository frenoR;
 	private final ITipoSospensioneRepository sospR;
 	private final ITipoVeicoloRepository veicR;
-	private final IMessagesServices msgS;
 	
 	
 	public VeicoloFilter toVeicoloFilter(VeicoloFilterRequest req) {
@@ -100,43 +98,43 @@ public  class FilterTranslator {
 	
 	 private Integer findMarcaId(String v) {
 	        return marcaR.findByMarca(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mar")))
+	                .orElseThrow(() -> new VeicoloException("!exists_mar"))
 	                .getId(); 
 	    }
 	 
 	 private Integer findTipoVeicoloId(String v) {
 	        return veicR.findByTipoVeicolo(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_vei")))
+	                .orElseThrow(() -> new VeicoloException("!exists_vei"))
 	                .getId(); 
 	    }
 
 	    private Integer findColoreId(String v) {
 	        return colR.findByColore(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_col")))
+	                .orElseThrow(() -> new VeicoloException("!exists_col"))
 	                .getId();
 	    }
 
 	    private Integer findCategoriaId(String v) {
 	        return catR.findByCategoria(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mar")))
+	                .orElseThrow(() -> new VeicoloException("!exists_mar"))
 	                .getId();
 	    }
 
 	    private Integer findTipoAlimId(String v) {
 	        return alimR.findByTipoAlimentazione(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_ali")))
+	                .orElseThrow(() -> new VeicoloException("!exists_ali"))
 	                .getId();
 	    }
 
 	    private Integer findFrenoId(String v) {
 	        return frenoR.findByTipoFreno(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_fre")))
+	                .orElseThrow(() -> new VeicoloException("!exists_fre"))
 	                .getId();
 	    }
 
 	    private Integer findSospId(String v) {
 	        return sospR.findByTipoSospensione(v)
-	                .orElseThrow(() -> new VeicoloException(msgS.get("!exists_sos")))
+	                .orElseThrow(() -> new VeicoloException("!exists_sos"))
 	                .getId();
 	    }
 }

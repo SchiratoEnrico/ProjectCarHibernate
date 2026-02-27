@@ -41,7 +41,7 @@ public class BiciclettaController {
             Integer id = biciS.create(req);
             r.setMsg(msgS.get("rest_created")  + " con id: " + id);
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -55,7 +55,7 @@ public class BiciclettaController {
             biciS.delete(id);
             r.setMsg(msgS.get("rest_deleted"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -69,7 +69,7 @@ public class BiciclettaController {
             biciS.update(req);
             r.setMsg(msgS.get("rest_updated"));
         } catch (VeicoloException e) {
-            r.setMsg(e.getMessage());
+        	r.setMsg(msgS.get(e.getMessage()));
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -82,7 +82,7 @@ public class BiciclettaController {
 		try {
             r = biciS.findAll();
         } catch (VeicoloException e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -96,7 +96,7 @@ public class BiciclettaController {
         try {
             r = biciS.findById(id);
         } catch (Exception e) {
-            r = e.getMessage();
+            r = msgS.get(e.getMessage());
             status = HttpStatus.BAD_REQUEST;
         }
         return ResponseEntity.status(status).body(r);
@@ -137,7 +137,7 @@ public class BiciclettaController {
 
 	        r = biciS.filter(filT.toVeicoloFilter(filter));
 	    } catch (VeicoloException e) {
-	        r = e.getMessage();
+	        r = msgS.get(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;
 	    }
 	    return ResponseEntity.status(status).body(r);
