@@ -125,7 +125,7 @@ public class MacchinaImplementation implements IMacchinaServices{
 	            Utils.validateTarga(m);
 	        } 
 	        else
-	            throw new VeicoloException("null_tar");
+	            throw new VeicoloException("!valid_tar");
 
 	        return m;
 	    }
