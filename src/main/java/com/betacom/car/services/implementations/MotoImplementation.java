@@ -34,11 +34,13 @@ public class MotoImplementation implements IMotoServices{
 	@Override
 	public Integer create(MotoRequest req) throws VeicoloException {
 		log.debug("create {}", req);
-
+		
 		Moto mot = new Moto();
 		
 		mot = checkReqMoto(req, mot);
-		log.debug("dopo check req");
+		
+		Utils.validateTarga(mot);
+		
 		if (repM.findByTarga(mot.getTarga()).isPresent())
             throw new VeicoloException(msgS.get("exists_tar"));
 		
@@ -59,10 +61,13 @@ public class MotoImplementation implements IMotoServices{
 	@Override
 	public void update(MotoRequest req) throws VeicoloException {
 		log.debug("create {}", req);
-
+		
+		
 		Moto mot = repM.findById(req.getId()).orElseThrow(()-> new VeicoloException(msgS.get("!exists_mot")));
 		
 		mot = optReqMoto(req, mot);
+		
+		Utils.validateTarga(mot);
 		
 		repM.save(mot);
 

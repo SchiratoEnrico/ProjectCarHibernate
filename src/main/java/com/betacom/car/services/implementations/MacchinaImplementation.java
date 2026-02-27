@@ -34,13 +34,17 @@ public class MacchinaImplementation implements IMacchinaServices{
 	@Override
 	public Integer create(MacchinaRequest req) throws VeicoloException {
 		log.debug("create {}", req);
-
+				
         Macchina m = new Macchina();
         m = checkReqMacc(req, m);
+        
+        Utils.validateTarga(m);
+        
         // controllo se targa presente
         if (repM.findByTarga(m.getTarga()).isPresent()) {
         	throw new VeicoloException(msgS.get("exists_tar"));
-        	}
+    	}
+        
         int id = repM.save(m).getId();
         log.debug("macchina creata con id: {}", id);
         return id;
@@ -61,16 +65,17 @@ public class MacchinaImplementation implements IMacchinaServices{
 	@Override
 	public void update(MacchinaRequest req) throws VeicoloException {
 		log.debug("update {}", req);
-
+				
         Macchina m = repM.findById(req.getId())
                 .orElseThrow(() -> new VeicoloException(msgS.get("!exists_mac")));
         
         m = optReqMacc(req, m);
-        log.debug("");
-        repM.save(m);
-		
+       
+        Utils.validateTarga(m);
+       
+        repM.save(m);	
 	}
-
+	
 	@Override
 	public List<MacchinaDTO> findAll() throws VeicoloException {
 		log.debug("findAll()");

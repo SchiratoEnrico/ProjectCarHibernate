@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.betacom.car.dto.filters.VeicoloFilter;
 import com.betacom.car.dto.input.VeicoloFilterRequest;
+import com.betacom.car.dto.output.VeicoloDTO;
 import com.betacom.car.exceptions.VeicoloException;
-import com.betacom.car.services.interfaces.IBiciclettaServices;
-import com.betacom.car.services.interfaces.IMacchinaServices;
-import com.betacom.car.services.interfaces.IMessagesServices;
-import com.betacom.car.services.interfaces.IMotoServices;
 import com.betacom.car.services.interfaces.IVeicoloServices;
 import com.betacom.car.utilities.FilterTranslator;
 import com.betacom.car.utilities.Utils;
@@ -23,12 +21,9 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/rest/veicolo")
 public class VeicoloController {
-	private final IVeicoloServices veiS;
-	private final IMessagesServices msgS;
+	
+	private final IVeicoloServices<VeicoloDTO, Integer, VeicoloFilter> veiS;
 	private final FilterTranslator filT;
-	private final IMacchinaServices macchinaS;
-	private final IMotoServices motoS;
-	private final IBiciclettaServices biciS;
 	
 	@GetMapping ("/list")
 	private ResponseEntity<Object> list(){
@@ -72,8 +67,8 @@ public class VeicoloController {
 	        @RequestParam(required = false) String sospensione,
 	        @RequestParam(required = false) Integer numeroMarce,
 	        @RequestParam(required = false) Boolean pieghevole,
-	        @RequestParam(required=false) String targa,
-	        @RequestParam(required=false) Integer cc,
+	        @RequestParam(required= false) String targa,
+	        @RequestParam(required= false) Integer cc,
 			@RequestParam(required = false) Integer numeroPorte
 
 	) {
@@ -100,7 +95,9 @@ public class VeicoloController {
 	        							.sospensione(Utils.formatStringParam(sospensione))
 	        							.build();
 	    	
-	        r = veiS.filter(filT.toVeicoloFilter(filter));
+	    	VeicoloFilter f = filT.toVeicoloFilter(filter);
+	    	
+	        r = veiS.filter(f);
 	    	
 	    } catch (VeicoloException e) {
 	        r = e.getMessage();

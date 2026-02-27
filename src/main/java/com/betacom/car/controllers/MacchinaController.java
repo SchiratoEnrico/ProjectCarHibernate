@@ -145,6 +145,7 @@ public class MacchinaController {
 	    
 	    } catch (VeicoloException e) {
 	        r = e.getMessage();
+	        r = msgS.get(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;
 	    }
 	    return ResponseEntity.status(status).body(r);

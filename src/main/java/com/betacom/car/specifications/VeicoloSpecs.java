@@ -31,7 +31,7 @@ public class VeicoloSpecs {
 //        }
     	
     	//root è la tabella
-    	
+    	//per visualizzare la query possiamo attivare log sql
     	
     	//qui faccio una lambda che override la funzione sopra di Specificatio
     	//creo la funzione che costruisce WHERE della query
